@@ -1,0 +1,458 @@
+/*
+ * Apple Music for Spicetify
+ * Flat black pages, #1C1C1E raised surfaces, translucent "glass" bars, pink accent,
+ * large bold titles and rounded covers. Colours come from color.ini (--spice-*).
+ * Inspired by Apple Music and Apple's Liquid Glass design language.
+ */
+
+:root {
+  --am-accent: var(--spice-button);
+  --am-accent-hover: var(--spice-button-active);
+  --am-raised: var(--spice-main-elevated);
+  --am-hover: var(--spice-highlight);
+  --am-separator: rgba(var(--spice-rgb-text), 0.10);
+  --am-glass: rgba(var(--spice-rgb-player), 0.55);
+  --am-glass-edge: rgba(var(--spice-rgb-text), 0.12);
+  --am-glass-sheet: rgba(var(--spice-rgb-player), 0.50);
+  --am-blur: blur(28px) saturate(180%);
+  --am-radius-s: 6px;
+  --am-radius-m: 10px;
+  --am-radius-l: 14px;
+  --am-font: "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  --panel-gap: 0px;
+  --content-spacing: 24px;
+}
+
+html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
+.Root__top-container, .encore-text-body-medium {
+  font-family: var(--am-font) !important;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Layout: no boxed panels, one flat page ---------- */
+.Root__top-container {
+  --panel-gap: 0px;
+  gap: 0;
+  padding: 0;
+  background-color: var(--spice-main);
+}
+.Root__globalNav {
+  --panel-gap: 0px;
+  background-color: var(--am-glass) !important;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+  z-index: 5;
+  padding: 0 16px;
+  margin: 0;
+  height: 56px;
+  border-bottom: 1px solid var(--am-separator);
+}
+/* The page runs up under the glass global bar; padding on the scroller (not its content)
+   also pushes every sticky header down by the bar's height */
+#main-view {
+  grid-row-start: 1 !important;
+}
+#main-view .main-topBar-container {
+  top: 56px;
+}
+.main-view-container__scroll-node > [data-overlayscrollbars-viewport] {
+  padding-top: 56px !important;
+}
+
+/* Sidebars and the main view are plain surfaces separated by hairlines */
+.Root__top-container > div:not(.Root__globalNav):not(.main-nowPlayingBar-container) {
+  border-radius: 0;
+}
+.main-view-container {
+  background: var(--spice-main) !important;
+  border-radius: 0;
+}
+/* Inner layers stay clear so artist/album hero images show through */
+.main-view-container__scroll-node,
+.main-view-container__scroll-node-child {
+  background: transparent !important;
+}
+
+/* Side panels sit one step above the page, split by hairlines */
+#Desktop_LeftSidebar_Id {
+  background-color: var(--spice-sidebar) !important;
+  border-right: 1px solid var(--am-separator);
+}
+#Desktop_PanelContainer_Id {
+  background-color: var(--spice-sidebar) !important;
+  border-left: 1px solid var(--am-separator);
+}
+/* Spicy Lyrics paints a dark artwork background there: keep its text light in either scheme */
+#Desktop_PanelContainer_Id[class*="spicy-dynamic-bg"] {
+  --text-base: #fff;
+  --text-subdued: rgba(255, 255, 255, 0.7);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- Global bar ---------- */
+.Root__globalNav .main-globalNav-navLink {
+  background-color: var(--am-raised);
+  color: var(--spice-subtext);
+  transition: background-color .2s, color .2s, transform .15s;
+}
+.Root__globalNav .main-globalNav-navLink:hover {
+  background-color: var(--am-hover);
+  color: var(--spice-text);
+  transform: scale(1.05);
+}
+.Root__globalNav .main-globalNav-navLinkActive {
+  color: var(--am-accent);
+}
+
+/* Search: a pill like Apple Music's search field */
+.Root__globalNav input[data-testid="search-input"],
+.Root__globalNav form[role="search"] input {
+  background-color: var(--am-raised) !important;
+  border-radius: 999px !important;
+  border: 1px solid transparent !important;
+  color: var(--spice-text) !important;
+  font-family: var(--am-font);
+  transition: background-color .2s, border-color .2s;
+}
+.Root__globalNav input[data-testid="search-input"]:focus,
+.Root__globalNav form[role="search"] input:focus {
+  border-color: var(--am-accent) !important;
+  background-color: var(--am-hover) !important;
+}
+
+/* ---------- Library sidebar ---------- */
+.main-yourLibraryX-libraryRootlist,
+.main-yourLibraryX-header {
+  background: transparent !important;
+}
+.main-yourLibraryX-libraryRootlist [role="row"],
+.main-yourLibraryX-libraryRootlist li {
+  border-radius: var(--am-radius-m);
+}
+.main-yourLibraryX-libraryRootlist [role="row"]:hover {
+  background-color: var(--am-raised);
+}
+
+/* Filter chips: the colours live on the inner span, not the button */
+[data-encore-id="chip"] > span {
+  border-radius: 999px !important;
+  background-color: var(--am-raised) !important;
+  color: var(--spice-text) !important;
+  font-weight: 600;
+  transition: background-color .2s;
+}
+[data-encore-id="chip"]:hover > span {
+  background-color: var(--am-hover) !important;
+}
+[data-encore-id="chip"][aria-checked="true"] > span {
+  background-color: var(--am-accent) !important;
+  color: #fff !important;
+}
+
+/* Home shortcut tiles */
+.view-homeShortcutsGrid-shortcut {
+  border-radius: var(--am-radius-m);
+  background-color: var(--am-raised);
+  overflow: hidden;
+  transition: background-color .2s;
+}
+.view-homeShortcutsGrid-shortcut:hover {
+  background-color: var(--am-hover);
+}
+
+/* Covers: theme.js tags the 6px ones so round artist images are left alone */
+.am-r10 { border-radius: var(--am-radius-m) !important; }
+
+/* ---------- Titles ---------- */
+.main-entityHeader-title,
+.main-entityHeader-titleInner h1,
+h1[data-encore-id="text"] {
+  font-family: var(--am-font) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em;
+}
+section h2, .encore-text-title-large {
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+
+/* ---------- Cards ---------- */
+.main-card-card {
+  background-color: transparent !important;
+  padding: 12px;
+  border-radius: var(--am-radius-l);
+  transition: background-color .2s;
+}
+.main-card-card:hover {
+  background-color: var(--am-raised) !important;
+}
+.main-card-imageContainer, .main-cardImage-imageWrapper {
+  border-radius: var(--am-radius-m);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.main-cardImage-image, .main-cardImage-imageWrapper img {
+  border-radius: var(--am-radius-m);
+}
+.main-cardImage-circular, .main-cardImage-circular img {
+  border-radius: 50% !important;
+}
+.main-card-cardTitle, .main-card-cardTitleLink {
+  font-weight: 600;
+}
+
+/* ---------- Buttons ---------- */
+/* Accent buttons (page play/pause): Spotify's hover and press shades are hardcoded green */
+.encore-bright-accent-set {
+  --background-highlight: var(--spice-button) !important;
+  --background-press: var(--spice-button) !important;
+}
+/* Big green play buttons become Apple-style pink */
+[data-testid="play-button"],
+.main-card-PlayButtonContainer button,
+button[data-testid="play-button"],
+button[aria-label="Play"][class*="Button"],
+.main-playButton-PlayButton {
+  background-color: var(--am-accent) !important;
+  color: #fff !important;
+  box-shadow: 0 6px 16px rgba(250, 45, 72, 0.4);
+}
+[data-testid="play-button"]:hover,
+.main-card-PlayButtonContainer button:hover {
+  background-color: var(--am-accent-hover) !important;
+  transform: scale(1.06);
+}
+/* Liked / active toggles */
+button[aria-checked="true"][aria-label*="Save"],
+button[aria-checked="true"] svg,
+.main-shuffleButton-button.main-shuffleButton-enabled,
+.main-repeatButton-button.main-repeatButton-enabled {
+  color: var(--am-accent) !important;
+}
+.main-shuffleButton-button.main-shuffleButton-enabled::after,
+.main-repeatButton-button.main-repeatButton-enabled::after {
+  background-color: var(--am-accent) !important;
+}
+
+/* ---------- Track lists ---------- */
+[role="row"][aria-rowindex] > [role="presentation"] {
+  border-radius: var(--am-radius-m);
+  transition: background-color .15s;
+}
+[role="row"][aria-rowindex] > [role="presentation"]:hover {
+  background-color: var(--am-raised) !important;
+}
+[role="row"][aria-selected="true"] > [role="presentation"] {
+  background-color: var(--am-hover) !important;
+}
+[role="row"][aria-rowindex] > [role="presentation"]:hover [aria-colindex="2"] > div > [data-encore-id="text"]:first-child {
+  color: var(--am-accent);
+}
+[role="grid"] [role="row"][aria-rowindex="1"] {
+  border-bottom: 1px solid var(--am-separator);
+}
+/* The sticky column header turns to glass once stuck. Spotify's own "stuck" detection is
+   thrown off by the scroller padding above, so the browser's scroll-state query decides.
+   No :has() anywhere in this file: it made every hover re-style the whole page (~400 ms freezes). */
+#main-view [role="grid"] > [role="presentation"]:first-child:not(:only-child) {
+  container-type: scroll-state;
+}
+@container scroll-state(stuck: top) {
+  #main-view [role="grid"] > [role="presentation"]:first-child > div:first-child {
+    margin: 0 calc(-1 * var(--content-spacing));
+    padding: 0 var(--content-spacing);
+    background: var(--am-glass);
+    -webkit-backdrop-filter: var(--am-blur);
+    backdrop-filter: var(--am-blur);
+  }
+}
+
+/* ---------- Now playing bar: a floating glass capsule ---------- */
+/* Every column and view (including lyrics) runs down into the player row so pages scroll under the glass */
+.Root__top-container > div:not(.Root__globalNav) {
+  grid-row-end: now-playing-bar-end !important;
+}
+/* The player's wrapper is the root child right after the library sidebar */
+.Root__top-container > #Desktop_LeftSidebar_Id + div {
+  background: transparent !important;
+  pointer-events: none;
+}
+.main-view-container__scroll-node-child,
+.main-yourLibraryX-libraryRootlist,
+#Desktop_PanelContainer_Id [data-overlayscrollbars-viewport] > * {
+  padding-bottom: 96px;
+}
+.main-nowPlayingBar-container {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 0 12px 12px;
+}
+.main-nowPlayingBar-nowPlayingBar,
+.main-nowPlayingBar-container > .encore-bright-accent-set {
+  pointer-events: auto;
+}
+/* "Playing on <device>" strip: a small pill under the capsule instead of a full-width band */
+.main-nowPlayingBar-container > .encore-bright-accent-set {
+  margin-top: 6px;
+  border-radius: var(--am-radius-m);
+}
+.main-nowPlayingBar-nowPlayingBar {
+  background: var(--am-glass) !important;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+  border: 1px solid var(--am-glass-edge);
+  border-radius: var(--am-radius-l);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  padding: 8px 14px;
+}
+.main-nowPlayingWidget-nowPlaying img,
+.main-nowPlayingBar-left img {
+  border-radius: var(--am-radius-s);
+}
+/* Play/pause: white disc, black glyph, like the player screen */
+.main-nowPlayingBar-center button[data-testid="control-button-playpause"] {
+  background-color: var(--spice-text) !important;
+  color: var(--spice-main) !important;
+  transition: transform .15s;
+}
+.main-nowPlayingBar-center button[data-testid="control-button-playpause"]:hover {
+  transform: scale(1.08);
+}
+
+/* Progress and volume: thin bars that grow on hover, accent on active */
+.playback-progressbar, [data-testid="playback-progressbar"] {
+  --progress-bar-height: 4px;
+}
+.x-progressBar-progressBarBg {
+  border-radius: 999px;
+}
+.x-progressBar-fillColor {
+  background-color: var(--spice-text) !important;
+  border-radius: 999px;
+}
+.playback-progressbar:hover .x-progressBar-fillColor {
+  background-color: var(--am-accent) !important;
+}
+
+/* ---------- Top bar of pages: clear at rest, glass once content scrolls under it ---------- */
+.main-topBar-container,
+.main-topBar-overlay {
+  background: transparent !important;
+}
+.main-topBar-background {
+  background-color: var(--am-glass) !important;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+}
+.main-topBar-background::after {
+  background: none !important;
+}
+.main-topBar-historyButtons button {
+  background-color: var(--am-raised);
+}
+
+/* ---------- Menus, popovers, modals: glass sheets ---------- */
+[role="menu"], [data-tippy-root] [role="menu"], .main-contextMenu-menu,
+[role="dialog"] > div, .GenericModal > div {
+  background: var(--am-glass-sheet) !important;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+  border: 1px solid var(--am-glass-edge);
+  border-radius: var(--am-radius-l) !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+[role="menuitem"], .main-contextMenu-menuItemButton {
+  border-radius: var(--am-radius-s);
+}
+[role="menuitem"]:hover, .main-contextMenu-menuItemButton:hover {
+  background-color: rgba(var(--spice-rgb-text), 0.10) !important;
+}
+
+/* ---------- Scrollbars ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--spice-rgb-text), 0.22);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--spice-rgb-text), 0.4);
+  background-clip: content-box;
+}
+
+/* ---------- Links and selection ---------- */
+a:hover { text-decoration: none; }
+::selection { background: var(--am-accent); color: #fff; }
+
+/* ---------- No tinted page gradients: Apple Music pages stay flat ---------- */
+.main-view-container__scroll-node-child > main > div > div[style*="background-color"]:first-child {
+  background: transparent !important;
+}
+/* Home's sticky chip bar: glass instead of the tinted band */
+[data-testid="home-ads-container"] ~ div > div[style*="--background-base"] {
+  background: var(--am-glass) !important;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+}
+[data-testid="entity-header"] > div[style*="background-color"],
+[data-testid="entity-header"] > div[class*=" "],
+section[data-testid$="-page"] > div[style*="background-color"] {
+  background: transparent !important;
+}
+
+/* Artist-coloured backdrop behind the hero and action-bar wash: page colour, no tinted gradient */
+.before-scroll-node > div[style*="background-color"] {
+  background-color: transparent !important;
+}
+/* Carousel edge fades are hardcoded near-black: use the page colour so they work in Light too */
+section[data-shelf="carousel"] > div[style*="--scrollAnimationRangeStart"]::before {
+  background-image: linear-gradient(90deg, rgba(var(--spice-rgb-main), 0.7), transparent) !important;
+}
+section[data-shelf="carousel"] > div[style*="--scrollAnimationRangeStart"]::after {
+  background-image: linear-gradient(-90deg, rgba(var(--spice-rgb-main), 0.7), transparent) !important;
+}
+section[data-testid$="-page"] div[style*="--background-base"] {
+  background-image: none !important;
+}
+
+/* Hero photos fade into the black page instead of ending on a hard edge */
+.before-scroll-node > div:not([data-testid="overscroll-background"]) {
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+}
+
+/* Lyrics: the playing cover, blurred, behind the words (theme.js sets --am-cover and .am-lyrics) */
+.am-lyrics #main-view {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+.am-lyrics #main-view::before {
+  content: "";
+  position: absolute;
+  inset: -15%;
+  background: var(--am-cover) center / cover no-repeat;
+  filter: blur(90px) saturate(1.6) brightness(0.55);
+}
+.am-lyrics #main-view > div {
+  background: transparent !important;
+}
+#main-view [style*="--lyrics-color-background"] {
+  --lyrics-color-background: transparent !important;
+  --lyrics-color-inactive: rgba(255, 255, 255, 0.45) !important;
+  --lyrics-color-passed: rgba(255, 255, 255, 0.45) !important;
+}
+.am-lyrics #main-view [style*="--cinema-mode-bg-color-from"] {
+  --cinema-mode-bg-color-from: transparent !important;
+  --cinema-mode-bg-color-to: transparent !important;
+}
+.am-lyrics #main-view [style*="--cinema-mode-bg-color-from"] > div {
+  background-color: transparent !important;
+}
+
+/* Album/other headers set their tint through --background-base: clear it */
+[data-testid="entity-header"] > div[style*="--background-base"],
+section[data-testid$="-page"] > div[style*="--background-base"] {
+  background: transparent !important;
+}
