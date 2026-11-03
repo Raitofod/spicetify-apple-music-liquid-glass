@@ -32,7 +32,8 @@
   })();
 
   // Flags the lyrics page with .am-lyrics (a CSS :has() for this froze hovering) and Home with
-  // .am-home (Spotify's active-link class has no stable name on macOS).
+  // .am-home (Spotify's active-link class has no stable name on macOS) and search results with
+  // .am-search (their sticky filter bar has no stable hook of its own).
   (function waitForHistory() {
     const history = window.Spicetify?.Platform?.History;
     if (!history) return setTimeout(waitForHistory, 300);
@@ -40,6 +41,7 @@
       const root = document.documentElement.classList;
       root.toggle("am-lyrics", loc.pathname === "/lyrics");
       root.toggle("am-home", loc.pathname === "/");
+      root.toggle("am-search", loc.pathname.startsWith("/search/"));
     };
     history.listen(flag);
     flag(history.location);

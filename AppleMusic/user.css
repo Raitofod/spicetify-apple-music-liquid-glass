@@ -42,13 +42,23 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 }
 #global-nav-bar {
   --panel-gap: 0px;
-  background-color: var(--am-glass) !important;
-  -webkit-backdrop-filter: var(--am-blur);
-  backdrop-filter: var(--am-blur);
+  background-color: transparent !important;
   padding: 0 16px;
   margin: 0;
   height: var(--am-nav-height);
   border-bottom: 1px solid var(--am-separator);
+}
+/* The glass sits on a pseudo-element: a backdrop-filter on the bar itself would stop the
+   search suggestions panel inside it from blurring the page behind */
+#global-nav-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--am-glass);
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+  pointer-events: none;
 }
 /* Not #id: Spotify's own z-index during view transitions has to keep winning */
 [id="global-nav-bar"] {
@@ -421,6 +431,26 @@ a:hover { text-decoration: none; }
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
 }
+/* Spicy Lyrics' big cover ends in a hard edge that shows through the translucent lyrics card:
+   fade it into the page instead */
+#Desktop_PanelContainer_Id [class*="SpicyLyrics_NPVStretch"] img[alt=""]:only-child {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 160px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 160px), transparent);
+}
+/* The suggestions panel under the search field: glass like the menus */
+#search-dropdown > div {
+  background: var(--am-glass-sheet) !important;
+  /* lighter than --am-blur: the page keeps scrolling behind this panel while it is open */
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--am-glass-edge);
+}
+/* Search results' sticky filter bar (Tout, Artistes, Titres...): glass instead of solid page colour */
+.am-search .main-view-container__scroll-node-child > main > div > div:first-child {
+  background: var(--am-glass) !important;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+}
 [data-testid="entity-header"] > div[style*="background-color"],
 [data-testid="entity-header"] > div[class*=" "],
 section[data-testid$="-page"] > div[style*="background-color"] {
@@ -459,7 +489,7 @@ section[data-testid$="-page"] div[style*="--background-base"] {
   position: absolute;
   inset: -15%;
   background: var(--am-cover) center / cover no-repeat;
-  filter: blur(90px) saturate(1.6) brightness(0.55);
+  filter: blur(48px) saturate(1.8) brightness(0.72);
 }
 .am-lyrics #main-view > div {
   background: transparent !important;

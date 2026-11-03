@@ -12,7 +12,7 @@
 
 ## Why this theme
 
-- **Real glass.** The top bar, track list headers, menus and dialogs blur and saturate the page scrolling behind them.
+- **Real glass.** The top bar, the search suggestions, track list headers, menus and dialogs blur and saturate the page scrolling behind them.
 - **Floating player.** The now-playing bar is a rounded glass capsule, with pages, the library and side panels scrolling underneath.
 - **Immersive pages.** Artist and playlist photos run up under the glass and fade into the page, with no tinted Spotify gradients.
 - **Lyrics over your artwork.** The lyrics page shows the current cover, heavily blurred, and follows every track change.
@@ -22,8 +22,10 @@
 
 ## Screenshots
 
-| Playlist | Artist page |
+| Glass search suggestions | Glass filter bar on search results |
 | --- | --- |
+| ![Search suggestions in a frosted glass panel blurring the artist page behind it](images/search.png) | ![Search results scrolling under a glass filter bar](images/search-results.png) |
+| **Playlist** | **Artist page** |
 | ![Playlist page with its photo under the glass top bar](images/playlist.png) | ![Artist page fading into the black page](images/artist.png) |
 | **Sticky glass header** | **Lyrics over the blurred cover** |
 | ![Album track list scrolling under the glass header](images/album.png) | ![Lyrics page over the blurred album art](images/lyrics.png) |
@@ -40,7 +42,7 @@ You need [Spicetify](https://spicetify.app) installed first.
 2. Set the sort order to **Last Updated** or **Newest**.
 3. Search for **Apple Music Liquid Glass** and install it.
 
-The Marketplace search only looks through the themes it has already loaded. If the search finds nothing, clear it, scroll to the bottom of the list and search again.
+The Marketplace search only looks through the themes it has already loaded, which is why the sort order above matters.
 
 ### Manual install
 
@@ -88,7 +90,6 @@ This is a fan-made theme. It is not affiliated with, endorsed by or connected to
 Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look.
 
 **Known limits:**
-- The search page filter bar stays opaque, because it has no stable hook.
 - The lyrics background needs a track to be playing.
 - On Windows, Spotify draws its own dark veil behind the minimize, maximize and close buttons. A theme can't remove it, so it shows as a grey block in the Light scheme.
 
