@@ -1,0 +1,11 @@
+name: Idea
+description: Suggest something to improve the theme
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+      description: What would you change? A screenshot or an Apple Music reference helps.
+    validations:
+      required: true

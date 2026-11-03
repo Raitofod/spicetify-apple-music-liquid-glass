@@ -1,48 +1,69 @@
-# Apple Music Liquid Glass — a Spicetify theme for Spotify
+<div align="center">
 
-**Make Spotify look like Apple Music, with the frosted Liquid Glass style of iOS 26 and macOS Tahoe.** Pages scroll under see-through bars and a floating glass player, lyrics sit on your blurred album art, and everything gets rounded covers and the Apple Music pink accent. Dark and Light schemes included.
+# Apple Music Liquid Glass
 
-[![GitHub stars](https://img.shields.io/github/stars/Raitofod/spicetify-apple-music-liquid-glass?style=flat&color=FA2D48)](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers)
+### A Spicetify theme for Spotify
+
+**Make Spotify look like Apple Music, with the frosted Liquid Glass style of iOS 26 and macOS Tahoe.**
+
 [![Spicetify Marketplace](https://img.shields.io/badge/Spicetify-Marketplace-FA2D48)](#install-from-the-marketplace)
+[![Dark and Light](https://img.shields.io/badge/schemes-Dark%20%2B%20Light-1C1C1E)](#dark-or-light)
+[![Star this theme](https://img.shields.io/badge/%E2%98%85-Star%20this%20theme-FA2D48)](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers)
 [![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
-![Spotify pages scrolling under the frosted glass bars of the Apple Music Liquid Glass theme](images/demo.webp)
+![Spotify pages scrolling under frosted glass, the glass search suggestions and the lyrics over a blurred cover, switching between the Dark and Light schemes](images/demo.webp)
+
+**[Install](#installation) · [Screenshots](#screenshots) · [Report a bug](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/issues/new/choose)**
+
+</div>
+
+Pages scroll under see-through bars and a floating glass player, lyrics sit on your blurred album art, and everything gets rounded covers and the Apple Music pink accent.
 
 **Like it? [Leave a star](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers).** The Marketplace ranks themes by stars, so each one helps other people find this theme.
 
 ## Why this theme
 
-- **Real glass.** The top bar, the search suggestions, track list headers, menus and dialogs blur and saturate the page scrolling behind them.
+- **Real glass.** The top bar, the search suggestions, the filter bars, track list headers, menus and dialogs blur the page scrolling behind them.
 - **Floating player.** The now-playing bar is a rounded glass capsule, with pages, the library and side panels scrolling underneath.
 - **Immersive pages.** Artist and playlist photos run up under the glass and fade into the page, with no tinted Spotify gradients.
-- **Lyrics over your artwork.** The lyrics page shows the current cover, heavily blurred, and follows every track change.
+- **Lyrics over your artwork.** The lyrics page and the fullscreen view show the current cover, blurred, and follow every track change.
 - **Apple Music details.** Rounded covers, big bold titles and the `#FA2D48` pink accent, with no leftover Spotify green.
-- **Dark and Light.** Two complete colour schemes, lyrics views included.
 - **Fast.** The theme avoids `:has()` selectors, which caused freezes of about 400 ms when moving the mouse quickly over track lists.
+
+## Dark or Light
+
+Two complete colour schemes, lyrics and fullscreen views included.
+
+![The lyrics page, half in the Dark scheme and half in the Light scheme](images/dark-light.png)
 
 ## Screenshots
 
-| Glass search suggestions | Glass filter bar on search results |
+| Dark | Light |
 | --- | --- |
-| ![Search suggestions in a frosted glass panel blurring the artist page behind it](images/search.png) | ![Search results scrolling under a glass filter bar](images/search-results.png) |
-| **Playlist** | **Artist page** |
-| ![Playlist page with its photo under the glass top bar](images/playlist.png) | ![Artist page fading into the black page](images/artist.png) |
-| **Sticky glass header** | **Lyrics over the blurred cover** |
-| ![Album track list scrolling under the glass header](images/album.png) | ![Lyrics page over the blurred album art](images/lyrics.png) |
+| **Glass search suggestions** | |
+| ![Dark scheme: search suggestions in a frosted glass panel over an artist page](images/search.png) | ![Light scheme: search suggestions in a frosted glass panel over an artist page](images/light-search.png) |
+| **Playlist under the glass bar** | |
+| ![Dark scheme: playlist page with its photo under the glass top bar](images/playlist.png) | ![Light scheme: playlist page with its photo under the glass top bar](images/light-playlist.png) |
+| **Lyrics over the blurred cover** | |
+| ![Dark scheme: lyrics over a dark blurred cover](images/lyrics.png) | ![Light scheme: lyrics over a light blurred cover](images/light-lyrics.png) |
+
+<details>
+<summary><b>More screenshots</b></summary>
+
+| Dark | Light |
+| --- | --- |
+| **Fullscreen lyrics** | |
+| ![Dark scheme: fullscreen lyrics over the blurred cover](images/fullscreen.png) | ![Light scheme: fullscreen lyrics over the blurred cover](images/light-fullscreen.png) |
+| **Artist page** | |
+| ![Dark scheme: artist page fading into the black page](images/artist.png) | ![Light scheme: artist page fading into the white page](images/light-artist.png) |
+| **Glass filter bar on search results** | |
+| ![Dark scheme: search results scrolling under a glass filter bar](images/search-results.png) | ![Light scheme: search results scrolling under a glass filter bar](images/light-search-results.png) |
+| **Sticky glass header** | |
+| ![Dark scheme: album track list scrolling under the glass header](images/album.png) | ![Light scheme: album track list scrolling under the glass header](images/light-album.png) |
 | **Glass context menu** | |
-| ![Right-click menu with a frosted glass background](images/menu.png) | |
+| ![Dark scheme: right-click menu with a frosted glass background](images/menu.png) | ![Light scheme: right-click menu with a frosted glass background](images/light-menu.png) |
 
-### Light scheme
-
-| Glass search suggestions | Glass filter bar on search results |
-| --- | --- |
-| ![Light scheme: search suggestions in a frosted glass panel over an artist page](images/light-search.png) | ![Light scheme: search results scrolling under a glass filter bar](images/light-search-results.png) |
-| **Lyrics over the blurred cover** | **Fullscreen lyrics** |
-| ![Light scheme: lyrics over a light blurred cover](images/light-lyrics.png) | ![Light scheme: fullscreen lyrics over a light blurred cover](images/light-fullscreen.png) |
-| **Playlist** | **Artist page** |
-| ![Light scheme: playlist page with its photo under the glass top bar](images/light-playlist.png) | ![Light scheme: artist page fading into the white page](images/light-artist.png) |
-| **Sticky glass header** | **Glass context menu** |
-| ![Light scheme: album track list under the glass header](images/light-album.png) | ![Light scheme: right-click menu with a frosted glass background](images/light-menu.png) |
+</details>
 
 ## Installation
 
@@ -99,7 +120,7 @@ This is a fan-made theme. It is not affiliated with, endorsed by or connected to
 
 ## Compatibility
 
-Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look.
+Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11, on its own and with Spicy Lyrics. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look.
 
 **Known limits:**
 - The lyrics background needs a track to be playing.
