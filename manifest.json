@@ -1,11 +1,11 @@
 {
   "name": "Apple Music Liquid Glass",
-  "description": "Apple Music look with Liquid Glass: frosted translucent bars, a floating glass player, blurred-artwork lyrics, rounded covers and a pink accent. Dark and Light schemes.",
+  "description": "Apple Music + Liquid Glass for Spotify: frosted see-through bars, a floating glass player, lyrics over blurred artwork. Dark & Light.",
   "preview": "images/preview.png",
   "readme": "README.md",
   "usercss": "AppleMusic/user.css",
   "schemes": "AppleMusic/color.ini",
   "include": ["https://raitofod.github.io/spicetify-apple-music-liquid-glass/AppleMusic/theme.js"],
   "authors": [{ "name": "Raitofod", "url": "https://github.com/Raitofod" }],
-  "tags": ["dark", "light", "glass", "apple-music"]
+  "tags": ["liquid-glass", "apple-music", "dark", "light", "glass", "glassmorphism", "frosted", "blur", "transparent", "macos", "ios"]
 }

@@ -1,48 +1,48 @@
-# Apple Music Liquid Glass — a Spicetify theme
+# Apple Music Liquid Glass — a Spicetify theme for Spotify
 
-**An Apple Music look for the Spotify desktop app, built around Apple's Liquid Glass.** Frosted translucent bars, a floating glass player, lyrics over the blurred album art, rounded covers and the Apple Music pink accent. Dark and Light schemes.
+**Make Spotify look like Apple Music, with the frosted Liquid Glass style of iOS 26 and macOS Tahoe.** Pages scroll under see-through bars and a floating glass player, lyrics sit on your blurred album art, and everything gets rounded covers and the Apple Music pink accent. Dark and Light schemes included.
 
-![Apple Music Liquid Glass theme for Spicetify: playlist page](images/preview.png)
+[![GitHub stars](https://img.shields.io/github/stars/Raitofod/spicetify-apple-music-liquid-glass?style=flat&color=FA2D48)](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers)
+[![Spicetify Marketplace](https://img.shields.io/badge/Spicetify-Marketplace-FA2D48)](#install-from-the-marketplace)
+[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
-## Inspiration
+![Spotify pages scrolling under the frosted glass bars of the Apple Music Liquid Glass theme](images/demo.webp)
 
-- **Apple Music** gives the layout: flat black pages, `#1C1C1E` raised surfaces, big bold titles, rounded artwork and the pink/red accent (`#FA2D48`).
-- **Liquid Glass**, the translucent material Apple introduced across iOS 26 and macOS Tahoe, gives the surfaces. Bars, menus and the player are see-through panes that blur and saturate the content scrolling underneath.
+**Like it? [Leave a star](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers).** The Marketplace ranks themes by stars, so each one helps other people find this theme.
 
-This is a fan-made theme. It is not affiliated with, endorsed by or connected to Apple or Spotify.
+## Why this theme
 
-## Features
-
-- **Glass everywhere it matters.** The top bar, page headers, sticky track-list headers, context menus and dialogs all blur the page behind them (`backdrop-filter: blur() saturate()`).
-- **Floating player.** The now-playing bar is a rounded glass capsule. Pages, the library and side panels scroll underneath it.
-- **Immersive pages.** Artist and playlist photos run up under the glass top bar and fade into the page. Spotify's tinted gradients are removed.
-- **Lyrics over the artwork.** The lyrics page shows the current cover, heavily blurred, behind the words. It updates on every track change.
-- **Rounded covers.** Square covers get Apple-style corners and circular artist pictures stay round.
-- **Apple Music accent.** Play buttons, toggles, chips and the progress bar on hover use the pink accent, with no leftover Spotify green.
-- **Two schemes.** `Dark` (default) and `Light`.
-- **Fast.** The theme uses no `:has()` selectors, which cost ~400 ms freezes when moving the mouse quickly over track lists. Hovering stays within a few milliseconds of stock Spotify.
+- **Real glass.** The top bar, track list headers, menus and dialogs blur and saturate the page scrolling behind them.
+- **Floating player.** The now-playing bar is a rounded glass capsule, with pages, the library and side panels scrolling underneath.
+- **Immersive pages.** Artist and playlist photos run up under the glass and fade into the page, with no tinted Spotify gradients.
+- **Lyrics over your artwork.** The lyrics page shows the current cover, heavily blurred, and follows every track change.
+- **Apple Music details.** Rounded covers, big bold titles and the `#FA2D48` pink accent, with no leftover Spotify green.
+- **Dark and Light.** Two complete colour schemes.
+- **Fast.** The theme avoids `:has()` selectors, which caused freezes of about 400 ms when moving the mouse quickly over track lists.
 
 ## Screenshots
 
-| Artist page | Sticky glass header |
+| Playlist | Artist page |
 | --- | --- |
-| ![Artist page with the photo under the glass top bar](images/artist.png) | ![Album track list with the glass sticky header](images/album.png) |
-| **Lyrics over the blurred cover** | **Glass context menu** |
-| ![Lyrics page over the blurred album art](images/lyrics.png) | ![Right-click menu with a frosted glass background](images/menu.png) |
-| **Search** | **Light scheme** |
-| ![Search page](images/search.png) | ![Light scheme album page](images/light.png) |
+| ![Playlist page with its photo under the glass top bar](images/playlist.png) | ![Artist page fading into the black page](images/artist.png) |
+| **Sticky glass header** | **Lyrics over the blurred cover** |
+| ![Album track list scrolling under the glass header](images/album.png) | ![Lyrics page over the blurred album art](images/lyrics.png) |
+| **Glass context menu** | **Light scheme** |
+| ![Right-click menu with a frosted glass background](images/menu.png) | ![Light scheme album page](images/light.png) |
 
 ## Installation
 
 You need [Spicetify](https://spicetify.app) installed first.
 
-### Marketplace
+### Install from the Marketplace
 
-1. Open the **Marketplace** tab in Spotify.
-2. Go to **Themes**.
+1. Open the **Marketplace** tab in Spotify, then **Themes**.
+2. Set the sort order to **Last Updated** or **Newest**.
 3. Search for **Apple Music Liquid Glass** and install it.
 
-### Manual
+The Marketplace search only looks through the themes it has already loaded. If the search finds nothing, clear it, scroll to the bottom of the list and search again.
+
+### Manual install
 
 **Windows (PowerShell)**
 
@@ -68,22 +68,33 @@ To use the Light scheme, run `spicetify config color_scheme Light` followed by `
 
 Set another theme with `spicetify config current_theme <name>` and then run `spicetify apply`. `spicetify restore` removes every Spicetify change, including this theme.
 
+## Inspiration
+
+- **Apple Music** gives the layout: flat black pages, `#1C1C1E` raised surfaces, big bold titles, rounded artwork and the pink/red accent (`#FA2D48`).
+- **Liquid Glass**, the translucent material Apple introduced across iOS 26 and macOS Tahoe, gives the surfaces. Bars, menus and the player are see-through panes, close to what is often called glassmorphism.
+
+This is a fan-made theme. It is not affiliated with, endorsed by or connected to Apple or Spotify.
+
 ## What each file does
 
 | File | Role |
 | --- | --- |
 | `AppleMusic/color.ini` | The `Dark` and `Light` colour schemes |
 | `AppleMusic/user.css` | All the styling |
-| `AppleMusic/theme.js` | Two small helpers that CSS cannot do alone. It rounds covers without squaring artist pictures, and feeds the current cover to the lyrics background. |
+| `AppleMusic/theme.js` | Small helpers that CSS cannot do alone. It rounds covers without squaring artist pictures, feeds the current cover to the lyrics background and flags the current page. This is why the Marketplace shows an "external JS" tag. |
 
 ## Compatibility
 
-Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look. If that happens, please [open an issue](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/issues) with a screenshot.
+Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look.
 
 **Known limits:**
 - The search page filter bar stays opaque, because it has no stable hook.
 - The lyrics background needs a track to be playing.
 - On Windows, Spotify draws its own dark veil behind the minimize, maximize and close buttons. A theme can't remove it, so it shows as a grey block in the Light scheme.
+
+## Feedback
+
+Found a bug, or have an idea? [Open an issue](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/issues), with a screenshot and your system if you can. Ideas to improve the theme are very welcome.
 
 ## License
 
