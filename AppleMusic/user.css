@@ -21,31 +21,51 @@
   --am-font: "SF Pro Display", "SF Pro Text", "Inter", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
   --panel-gap: 0px;
   --content-spacing: 24px;
+  /* Spotify's stock height: the native window buttons (Windows, macOS) are sized to match it */
+  --am-nav-height: 64px;
 }
 
+/* Layout hooks are ids, test ids and structure on purpose: Spicetify's class names for the
+   root, global bar, player and library are not mapped on macOS builds, so they match nothing there. */
 html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
-.Root__top-container, .encore-text-body-medium {
+.Root > div:first-child, .encore-text-body-medium {
   font-family: var(--am-font) !important;
   -webkit-font-smoothing: antialiased;
 }
 
 /* ---------- Layout: no boxed panels, one flat page ---------- */
-.Root__top-container {
+.Root > div:first-child {
   --panel-gap: 0px;
   gap: 0;
   padding: 0;
   background-color: var(--spice-main);
 }
-.Root__globalNav {
+#global-nav-bar {
   --panel-gap: 0px;
   background-color: var(--am-glass) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
-  z-index: 5;
   padding: 0 16px;
   margin: 0;
-  height: 56px;
+  height: var(--am-nav-height);
   border-bottom: 1px solid var(--am-separator);
+}
+/* Not #id: Spotify's own z-index during view transitions has to keep winning */
+[id="global-nav-bar"] {
+  z-index: 5;
+}
+/* Windows draws its "..." menu natively in white: same veil as behind the window buttons,
+   so it stays readable on the Light scheme */
+.spotify__os--is-windows #global-nav-bar::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: 20px;
+  width: 40px;
+  height: 24px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.53);
+  pointer-events: none;
 }
 /* The page runs up under the glass global bar; padding on the scroller (not its content)
    also pushes every sticky header down by the bar's height */
@@ -53,14 +73,14 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   grid-row-start: 1 !important;
 }
 #main-view .main-topBar-container {
-  top: 56px;
+  top: var(--am-nav-height);
 }
 .main-view-container__scroll-node > [data-overlayscrollbars-viewport] {
-  padding-top: 56px !important;
+  padding-top: var(--am-nav-height) !important;
 }
 
 /* Sidebars and the main view are plain surfaces separated by hairlines */
-.Root__top-container > div:not(.Root__globalNav):not(.main-nowPlayingBar-container) {
+.Root > div:first-child > div:not(#global-nav-bar) {
   border-radius: 0;
 }
 .main-view-container {
@@ -90,23 +110,28 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 }
 
 /* ---------- Global bar ---------- */
-.Root__globalNav .main-globalNav-navLink {
+/* Round buttons: Home by position (the avatar sits at the same depth, with a test id),
+   custom app links by Spicetify's own class */
+#global-nav-bar > div > div > button:not([data-testid]),
+#global-nav-bar .main-globalNav-navLink {
   background-color: var(--am-raised);
   color: var(--spice-subtext);
+  border-radius: 50%;
   transition: background-color .2s, color .2s, transform .15s;
 }
-.Root__globalNav .main-globalNav-navLink:hover {
+#global-nav-bar > div > div > button:not([data-testid]):hover,
+#global-nav-bar .main-globalNav-navLink:hover {
   background-color: var(--am-hover);
   color: var(--spice-text);
   transform: scale(1.05);
 }
-.Root__globalNav .main-globalNav-navLinkActive {
+.am-home #global-nav-bar > div > div > button:not([data-testid]):not(:hover),
+#global-nav-bar .main-globalNav-navLinkActive:not(:hover) {
   color: var(--am-accent);
 }
 
 /* Search: a pill like Apple Music's search field */
-.Root__globalNav input[data-testid="search-input"],
-.Root__globalNav form[role="search"] input {
+#global-nav-bar form[role="search"] input {
   background-color: var(--am-raised) !important;
   border-radius: 999px !important;
   border: 1px solid transparent !important;
@@ -114,22 +139,21 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   font-family: var(--am-font);
   transition: background-color .2s, border-color .2s;
 }
-.Root__globalNav input[data-testid="search-input"]:focus,
-.Root__globalNav form[role="search"] input:focus {
+#global-nav-bar form[role="search"] input:focus {
   border-color: var(--am-accent) !important;
   background-color: var(--am-hover) !important;
 }
 
 /* ---------- Library sidebar ---------- */
-.main-yourLibraryX-libraryRootlist,
-.main-yourLibraryX-header {
+#Desktop_LeftSidebar_Id [data-overlayscrollbars-viewport] > *,
+#Desktop_LeftSidebar_Id header {
   background: transparent !important;
 }
-.main-yourLibraryX-libraryRootlist [role="row"],
-.main-yourLibraryX-libraryRootlist li {
+#Desktop_LeftSidebar_Id [role="row"],
+#Desktop_LeftSidebar_Id li {
   border-radius: var(--am-radius-m);
 }
-.main-yourLibraryX-libraryRootlist [role="row"]:hover {
+#Desktop_LeftSidebar_Id [role="row"]:hover {
   background-color: var(--am-raised);
 }
 
@@ -170,6 +194,10 @@ h1[data-encore-id="text"] {
   font-family: var(--am-font) !important;
   font-weight: 800 !important;
   letter-spacing: -0.01em;
+}
+/* Halo in the page colour: lifts dark titles off hero photos on the Light scheme */
+[data-testid="adaptiveEntityTitle"] {
+  text-shadow: 0 0 28px rgba(var(--spice-rgb-main), 0.75);
 }
 section h2, .encore-text-title-large {
   font-weight: 700;
@@ -268,34 +296,33 @@ button[aria-checked="true"] svg,
 
 /* ---------- Now playing bar: a floating glass capsule ---------- */
 /* Every column and view (including lyrics) runs down into the player row so pages scroll under the glass */
-.Root__top-container > div:not(.Root__globalNav) {
+.Root > div:first-child > div:not(#global-nav-bar) {
   grid-row-end: now-playing-bar-end !important;
 }
 /* The player's wrapper is the root child right after the library sidebar */
-.Root__top-container > #Desktop_LeftSidebar_Id + div {
+#Desktop_LeftSidebar_Id + div {
   background: transparent !important;
   pointer-events: none;
 }
 .main-view-container__scroll-node-child,
-.main-yourLibraryX-libraryRootlist,
+#Desktop_LeftSidebar_Id [data-overlayscrollbars-viewport] > *,
 #Desktop_PanelContainer_Id [data-overlayscrollbars-viewport] > * {
   padding-bottom: 96px;
 }
-.main-nowPlayingBar-container {
+[data-testid="now-playing-bar"] {
   background: transparent !important;
   border: 0 !important;
   padding: 0 12px 12px;
 }
-.main-nowPlayingBar-nowPlayingBar,
-.main-nowPlayingBar-container > .encore-bright-accent-set {
+[data-testid="now-playing-bar"] > div {
   pointer-events: auto;
 }
 /* "Playing on <device>" strip: a small pill under the capsule instead of a full-width band */
-.main-nowPlayingBar-container > .encore-bright-accent-set {
+[data-testid="now-playing-bar"] > .encore-bright-accent-set {
   margin-top: 6px;
   border-radius: var(--am-radius-m);
 }
-.main-nowPlayingBar-nowPlayingBar {
+[data-testid="now-playing-bar"] > div:not(.encore-bright-accent-set) {
   background: var(--am-glass) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
@@ -304,17 +331,16 @@ button[aria-checked="true"] svg,
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
   padding: 8px 14px;
 }
-.main-nowPlayingWidget-nowPlaying img,
-.main-nowPlayingBar-left img {
+[data-testid="now-playing-bar"] img {
   border-radius: var(--am-radius-s);
 }
 /* Play/pause: white disc, black glyph, like the player screen */
-.main-nowPlayingBar-center button[data-testid="control-button-playpause"] {
+[data-testid="now-playing-bar"] button[data-testid="control-button-playpause"] {
   background-color: var(--spice-text) !important;
   color: var(--spice-main) !important;
   transition: transform .15s;
 }
-.main-nowPlayingBar-center button[data-testid="control-button-playpause"]:hover {
+[data-testid="now-playing-bar"] button[data-testid="control-button-playpause"]:hover {
   transform: scale(1.08);
 }
 

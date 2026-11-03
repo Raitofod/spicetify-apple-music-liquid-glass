@@ -78,11 +78,12 @@ Set another theme with `spicetify config current_theme <name>` and then run `spi
 
 ## Compatibility
 
-Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11. Spotify renames its internal classes often, so a Spotify update can break parts of the look. If that happens, please [open an issue](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/issues) with a screenshot.
+Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look. If that happens, please [open an issue](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/issues) with a screenshot.
 
 **Known limits:**
 - The search page filter bar stays opaque, because it has no stable hook.
 - The lyrics background needs a track to be playing.
+- On Windows, Spotify draws its own dark veil behind the minimize, maximize and close buttons. A theme can't remove it, so it shows as a grey block in the Light scheme.
 
 ## License
 
