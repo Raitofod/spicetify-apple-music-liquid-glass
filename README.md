@@ -17,7 +17,7 @@
 - **Immersive pages.** Artist and playlist photos run up under the glass and fade into the page, with no tinted Spotify gradients.
 - **Lyrics over your artwork.** The lyrics page shows the current cover, heavily blurred, and follows every track change.
 - **Apple Music details.** Rounded covers, big bold titles and the `#FA2D48` pink accent, with no leftover Spotify green.
-- **Dark and Light.** Two complete colour schemes.
+- **Dark and Light.** Two complete colour schemes, lyrics views included.
 - **Fast.** The theme avoids `:has()` selectors, which caused freezes of about 400 ms when moving the mouse quickly over track lists.
 
 ## Screenshots
@@ -29,8 +29,20 @@
 | ![Playlist page with its photo under the glass top bar](images/playlist.png) | ![Artist page fading into the black page](images/artist.png) |
 | **Sticky glass header** | **Lyrics over the blurred cover** |
 | ![Album track list scrolling under the glass header](images/album.png) | ![Lyrics page over the blurred album art](images/lyrics.png) |
-| **Glass context menu** | **Light scheme** |
-| ![Right-click menu with a frosted glass background](images/menu.png) | ![Light scheme album page](images/light.png) |
+| **Glass context menu** | |
+| ![Right-click menu with a frosted glass background](images/menu.png) | |
+
+### Light scheme
+
+| Glass search suggestions | Glass filter bar on search results |
+| --- | --- |
+| ![Light scheme: search suggestions in a frosted glass panel over an artist page](images/light-search.png) | ![Light scheme: search results scrolling under a glass filter bar](images/light-search-results.png) |
+| **Lyrics over the blurred cover** | **Fullscreen lyrics** |
+| ![Light scheme: lyrics over a light blurred cover](images/light-lyrics.png) | ![Light scheme: fullscreen lyrics over a light blurred cover](images/light-fullscreen.png) |
+| **Playlist** | **Artist page** |
+| ![Light scheme: playlist page with its photo under the glass top bar](images/light-playlist.png) | ![Light scheme: artist page fading into the white page](images/light-artist.png) |
+| **Sticky glass header** | **Glass context menu** |
+| ![Light scheme: album track list under the glass header](images/light-album.png) | ![Light scheme: right-click menu with a frosted glass background](images/light-menu.png) |
 
 ## Installation
 
