@@ -395,6 +395,22 @@ button[aria-checked="true"] svg,
   border-radius: var(--am-radius-l) !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
 }
+/* A backdrop-filter on a menu traps its sub-menus (Add to playlist...) inside it, clipped
+   and scrolling. Menus blur through a pseudo-element instead, which traps nothing. */
+[role="menu"], [data-tippy-root] [role="menu"], .main-contextMenu-menu {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+[role="menu"]::before, .main-contextMenu-menu::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+}
 [role="menuitem"], .main-contextMenu-menuItemButton {
   border-radius: var(--am-radius-s);
 }
