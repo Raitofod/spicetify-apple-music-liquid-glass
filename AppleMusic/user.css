@@ -432,6 +432,14 @@ button[aria-checked="true"] svg,
 }
 
 /* ---------- Scrollbars ---------- */
+/* The page scroller runs under the glass bars, so its thumb sat behind the top bar at the start of a
+   page and was only 30px tall on very long playlists. The track now stops at both bars and the thumb
+   keeps a usable minimum size. */
+.main-view-container__scroll-node > .os-scrollbar-vertical {
+  --os-handle-min-size: 64px;
+  top: calc(var(--am-nav-height) + 4px) !important;
+  bottom: 92px !important;
+}
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
