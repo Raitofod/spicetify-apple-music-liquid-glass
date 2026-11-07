@@ -53,14 +53,17 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   padding: 0 16px;
   margin: 0;
   height: var(--am-nav-height);
-  border-bottom: 1px solid var(--am-separator);
+  border-bottom: 1px solid transparent;
 }
 /* The glass sits on a pseudo-element: a backdrop-filter on the bar itself would stop the
-   search suggestions panel inside it from blurring the page behind */
+   search suggestions panel inside it from blurring the page behind. It also covers the 1px
+   bottom border (inset stops at the padding box), which would otherwise be a crisp, unblurred
+   line of page content; the hairline is drawn on the glass instead. */
 #global-nav-bar::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 0 0 -1px;
+  box-shadow: inset 0 -1px 0 var(--am-separator);
   z-index: -1;
   background: var(--am-glass);
   -webkit-backdrop-filter: var(--am-blur);
@@ -457,6 +460,11 @@ a:hover { text-decoration: none; }
   background: var(--am-glass) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
+}
+/* Its own 60% black veil would turn the glass dark grey on the Light scheme */
+[data-testid="home-ads-container"] ~ div > div[style*="--background-base"]::after,
+[data-testid="home-ads-container"] ~ div > div[style*="opacity"]::after {
+  background: none !important;
 }
 /* The Now Playing panel is a flat column: Spotify rounds its wrappers and the Canvas hero by 8px, which
    shows as notches against the white page in the Light scheme. Plain covers keep their rounding.
