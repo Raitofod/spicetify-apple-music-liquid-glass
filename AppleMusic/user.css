@@ -92,7 +92,8 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 }
 
 /* Sidebars and the main view are plain surfaces separated by hairlines */
-.Root > div:first-child > div:not(#global-nav-bar) {
+.Root > div:first-child > div:not(#global-nav-bar),
+#Desktop_LeftSidebar_Id > nav > div {
   border-radius: 0;
 }
 .main-view-container {
@@ -374,6 +375,8 @@ button[aria-checked="true"] svg,
   background: transparent !important;
 }
 .main-topBar-background {
+  /* Spotify rounds its top corners: against the glass bar they open a notch showing the rows beneath */
+  border-radius: 0 !important;
   background-color: var(--am-glass) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
