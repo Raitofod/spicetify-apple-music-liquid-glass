@@ -443,8 +443,10 @@ a:hover { text-decoration: none; }
 .main-view-container__scroll-node-child > main > div > div[style*="background-color"]:first-child {
   background: transparent !important;
 }
-/* Home's sticky chip bar: glass instead of the tinted band */
-[data-testid="home-ads-container"] ~ div > div[style*="--background-base"] {
+/* Home's sticky chip bar: glass instead of the tinted band. Spotify only sets --background-base on it in
+   some states; otherwise the band is solid black, a hole in the glass, so it is matched by its opacity too. */
+[data-testid="home-ads-container"] ~ div > div[style*="--background-base"],
+[data-testid="home-ads-container"] ~ div > div[style*="opacity"] {
   background: var(--am-glass) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
