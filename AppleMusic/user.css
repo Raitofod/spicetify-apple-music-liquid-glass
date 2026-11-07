@@ -11,10 +11,15 @@
   --am-raised: var(--spice-main-elevated);
   --am-hover: var(--spice-highlight);
   --am-separator: rgba(var(--spice-rgb-text), 0.10);
-  --am-glass: rgba(var(--spice-rgb-player), 0.55);
+  --am-glass: rgba(var(--spice-rgb-player), 0.36);
   --am-glass-edge: rgba(var(--spice-rgb-text), 0.12);
-  --am-glass-sheet: rgba(var(--spice-rgb-player), 0.50);
-  --am-blur: blur(28px) saturate(180%);
+  --am-glass-sheet: rgba(var(--spice-rgb-player), 0.44);
+  --am-blur: blur(18px) saturate(200%) brightness(1.08);
+  /* Liquid glass: a lit rim (top and left catch the light, bottom falls away) and a soft diagonal sheen */
+  --am-rim: inset 0 1px 0 rgba(255, 255, 255, 0.30), inset 1px 0 0 rgba(255, 255, 255, 0.10),
+    inset -1px 0 0 rgba(255, 255, 255, 0.05), inset 0 -1px 0 rgba(0, 0, 0, 0.30);
+  --am-sheen: linear-gradient(115deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.025) 28%,
+    rgba(255, 255, 255, 0) 52%, rgba(255, 255, 255, 0.035) 100%);
   --am-radius-s: 6px;
   --am-radius-m: 10px;
   --am-radius-l: 14px;
@@ -336,9 +341,10 @@ button[aria-checked="true"] svg,
   background: var(--am-glass) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
+  background-image: var(--am-sheen) !important;
   border: 1px solid var(--am-glass-edge);
   border-radius: var(--am-radius-l);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  box-shadow: var(--am-rim), 0 10px 40px rgba(0, 0, 0, 0.40);
   padding: 8px 14px;
 }
 [data-testid="now-playing-bar"] img {
@@ -394,9 +400,10 @@ button[aria-checked="true"] svg,
   background: var(--am-glass-sheet) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
+  background-image: var(--am-sheen) !important;
   border: 1px solid var(--am-glass-edge);
   border-radius: var(--am-radius-l) !important;
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--am-rim), 0 16px 48px rgba(0, 0, 0, 0.5);
 }
 /* A backdrop-filter on a menu traps its sub-menus (Add to playlist...) inside it, clipped
    and scrolling. Menus blur through a pseudo-element instead, which traps nothing. */
@@ -506,7 +513,9 @@ a:hover { text-decoration: none; }
   /* lighter than --am-blur: the page keeps scrolling behind this panel while it is open */
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
+  background-image: var(--am-sheen) !important;
   border: 1px solid var(--am-glass-edge);
+  box-shadow: var(--am-rim);
 }
 /* Search results' sticky filter bar (Tout, Artistes, Titres...): glass instead of solid page colour */
 .am-search .main-view-container__scroll-node-child > main > div > div:first-child {
