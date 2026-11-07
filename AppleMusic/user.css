@@ -568,14 +568,17 @@ section[data-testid$="-page"] div[style*="--background-base"] {
 }
 /* Fullscreen view (lyrics, cover, Canvas): the same blurred cover as the Lyrics page instead of Spotify's
    flat colour. The artist photo mode fills the screen on its own, so .am-lyrics is off there. */
-.am-lyrics [style*="--cinema-mode-bg-color-from"] {
-  overflow: clip;
+/* The backdrop sits on the view's fixed frame, not on the lyrics container: that one is what scrolls, and
+   clipping it (overflow: clip) froze the lyrics at the top */
+.am-lyrics .Root > div > div > [data-overlayscrollbars="host"] {
+  isolation: isolate;
 }
-.am-lyrics [style*="--cinema-mode-bg-color-from"]::before {
+.am-lyrics .Root > div > div > [data-overlayscrollbars="host"]::before {
   content: "";
   position: absolute;
   inset: -15%;
   z-index: -1;
+  pointer-events: none;
   background: linear-gradient(rgba(var(--spice-rgb-main), 0.6), rgba(var(--spice-rgb-main), 0.6)), var(--am-cover) center / cover no-repeat;
   filter: blur(48px) saturate(1.6);
 }
