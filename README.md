@@ -6,10 +6,11 @@
 
 **Make Spotify look like Apple Music, with the frosted Liquid Glass style of iOS 26 and macOS Tahoe.**
 
-[![Spicetify Marketplace](https://img.shields.io/badge/Spicetify-Marketplace-FA2D48)](#install-from-the-marketplace)
+[![Latest release](https://img.shields.io/github/v/release/Raitofod/spicetify-apple-music-liquid-glass?label=release&color=FA2D48)](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/releases/latest)
+[![Platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20macOS-1C1C1E)](#compatibility)
+[![Spicetify](https://img.shields.io/badge/Spicetify-2.46%2B-1C1C1E)](#installation)
 [![Dark and Light](https://img.shields.io/badge/schemes-Dark%20%2B%20Light-1C1C1E)](#dark-or-light)
 [![Star this theme](https://img.shields.io/badge/%E2%98%85-Star%20this%20theme-FA2D48)](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers)
-[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
 ![Spotify pages scrolling under frosted glass, the glass search suggestions and the lyrics over a blurred cover, switching between the Dark and Light schemes](images/demo.webp)
 
@@ -120,7 +121,7 @@ This is a fan-made theme. It is not affiliated with, endorsed by or connected to
 
 ## Compatibility
 
-Tested on Spotify 1.3.6 with Spicetify 2.46 on Windows 11, on its own and with Spicy Lyrics. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look.
+Tested on Spotify 1.3.8 with Spicetify 2.46 on Windows 11, on its own and with Spicy Lyrics. macOS builds use different internal class names, so the layout hangs on ids and test ids shared by both platforms; the macOS result was checked against the macOS build's stylesheet, not on a real Mac. Spotify renames its internal classes often, so a Spotify update can break parts of the look.
 
 **Known limits:**
 - The lyrics background needs a track to be playing.
