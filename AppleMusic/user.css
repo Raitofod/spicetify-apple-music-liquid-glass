@@ -678,3 +678,15 @@ section[data-testid$="-page"] > div[style*="--background-base"] {
   filter: saturate(0.45);
   border-radius: 0 !important;
 }
+
+/* Listening activity: the live "equalizer" icon (shown instead of a timestamp) takes the accent colour,
+   so the friend who is playing something right now stands out from the others */
+#Desktop_PanelContainer_Id p[data-encore-id="text"] > svg[role="img"] {
+  color: var(--am-accent) !important;
+  fill: var(--am-accent) !important;
+}
+
+/* Listening activity: Spotify's native "active friend" dot on the avatar uses the accent colour too */
+#Desktop_PanelContainer_Id figure::after {
+  background: var(--am-accent);
+}
