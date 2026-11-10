@@ -37,6 +37,21 @@ Two complete colour schemes, lyrics and fullscreen views included.
 
 ![The lyrics page, half in the Dark scheme and half in the Light scheme](images/dark-light.png)
 
+## Accent colours
+
+Apple Music is red, but you don't have to be. Each of Dark and Light comes in five more accents, taken from Apple's own system colours: Pink, Orange, Blue, Purple and Green.
+
+| Dark | Light |
+| --- | --- |
+| `Dark` (red, the default) | `Light` (red, the default) |
+| `Dark-Pink` | `Light-Pink` |
+| `Dark-Orange` | `Light-Orange` |
+| `Dark-Blue` | `Light-Blue` |
+| `Dark-Purple` | `Light-Purple` |
+| `Dark-Green` | `Light-Green` |
+
+In the Marketplace, open the theme's settings and pick a colour scheme. By hand, run `spicetify config color_scheme Dark-Blue` and then `spicetify apply`. Orange and Green are light colours, so the text on them (play button, selected chips) turns dark to stay readable.
+
 ## Screenshots
 
 | Dark | Light |
