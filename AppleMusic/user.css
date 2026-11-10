@@ -324,6 +324,11 @@ button[aria-checked="true"] svg,
   background: transparent !important;
   pointer-events: none;
 }
+/* Toasts ("Added to queue") sit in a layer below this wrapper, so they slid under the glass capsule:
+   lift them above it instead of fighting over z-index (the lyrics view lives in the same layer band) */
+.notistack-SnackbarContainer {
+  bottom: 104px !important;
+}
 .main-view-container__scroll-node-child,
 #Desktop_LeftSidebar_Id [data-overlayscrollbars-viewport] > *,
 #Desktop_PanelContainer_Id [data-overlayscrollbars-viewport] > * {
