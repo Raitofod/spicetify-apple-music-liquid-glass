@@ -160,6 +160,8 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 #global-nav-bar form[role="search"] input:focus {
   border-color: var(--am-accent) !important;
   background-color: var(--am-hover) !important;
+  /* Spotify's own white focus ring would stack on top of the accent border */
+  box-shadow: none !important;
 }
 
 /* ---------- Library sidebar ---------- */
