@@ -8,6 +8,8 @@
 :root {
   --am-accent: var(--spice-button);
   --am-accent-hover: var(--spice-button-active);
+  /* Text on the accent: white, unless the scheme sets on-accent (light accents like orange and green) */
+  --am-on-accent: var(--spice-on-accent, #fff);
   --am-raised: var(--spice-main-elevated);
   --am-hover: var(--spice-highlight);
   --am-separator: rgba(var(--spice-rgb-text), 0.10);
@@ -79,7 +81,7 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 .spotify__os--is-windows #global-nav-bar::before {
   content: "";
   position: absolute;
-  left: 14px;
+  left: 17px;
   top: 20px;
   width: 40px;
   height: 24px;
@@ -190,7 +192,7 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 }
 [data-encore-id="chip"][aria-checked="true"] > span {
   background-color: var(--am-accent) !important;
-  color: #fff !important;
+  color: var(--am-on-accent) !important;
 }
 
 /* Home shortcut tiles */
@@ -261,8 +263,8 @@ button[data-testid="play-button"],
 button[aria-label="Play"][class*="Button"],
 .main-playButton-PlayButton {
   background-color: var(--am-accent) !important;
-  color: #fff !important;
-  box-shadow: 0 6px 16px rgba(250, 45, 72, 0.4);
+  color: var(--am-on-accent) !important;
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--am-accent) 40%, transparent);
 }
 [data-testid="play-button"]:hover,
 .main-card-PlayButtonContainer button:hover {
@@ -465,7 +467,7 @@ button[aria-checked="true"] svg,
 
 /* ---------- Links and selection ---------- */
 a:hover { text-decoration: none; }
-::selection { background: var(--am-accent); color: #fff; }
+::selection { background: var(--am-accent); color: var(--am-on-accent); }
 
 /* ---------- No tinted page gradients: Apple Music pages stay flat ---------- */
 .main-view-container__scroll-node-child > main > div > div[style*="background-color"]:first-child {
