@@ -140,8 +140,11 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   color: var(--spice-text);
   transform: scale(1.05);
 }
-.am-home #global-nav-bar > div > div > button:not([data-testid]):not(:hover),
-#global-nav-bar .main-globalNav-navLinkActive:not(:hover) {
+/* The current page's button keeps the accent on hover too (only its background lightens);
+   these come after the hover rule above and tie on specificity, so they win */
+.am-home #global-nav-bar > div > div > button:not([data-testid]),
+#global-nav-bar .main-globalNav-navLinkActive,
+#global-nav-bar .main-globalNav-navLinkActive:hover {
   color: var(--am-accent);
 }
 
