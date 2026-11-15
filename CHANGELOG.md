@@ -1,15 +1,19 @@
 # Changelog
 
-## Unreleased
-### Changed
-- Cleaner top bar: no more full-width glass slab with a hard edge. The bar fades into the page, and the glass lives on the controls themselves: back / forward / theme buttons share one capsule, so do the bell and friends buttons, and the search field and round buttons get the same lit rim. The sticky filter bars on Home and on search results fade out the same way.
-- Sharper liquid glass: the bars and the player blur much less (4px instead of 18px) and tint less, so you can see what scrolls underneath. The edge catches the light all round. Menus and dialogs, which carry text, keep a stronger blur and a denser tint.
-
+## v1.4
 ### New
-- Light/Dark switch: a button in the top bar flips the current scheme to its twin and keeps your accent. The choice is remembered across restarts.
+- Light/Dark switch: a button in the top bar flips the current scheme to its twin (`Dark-Orange` becomes `Light-Orange`) and keeps your accent. The choice is remembered across restarts.
+
+### Changed
+- Cleaner top bar: no more full-width glass slab. The bar is solid in the page colour and the glass lives on the controls: back / forward / theme buttons share one capsule, so do the bell and friends buttons, and the search field and round buttons get the same lit rim.
+- Sticky bars are solid too: a page's title bar (play button and name), the track list column header and the filter bars on Home and on search results meet without a seam and fade out below the last one.
+- Sharper liquid glass: the player and the controls blur much less (4px instead of 18px) and tint less, so you can see what is underneath. The edge catches the light all round. Menus and dialogs, which carry text, keep a stronger blur and a denser tint.
+- On the lyrics page, the blurred cover now runs up behind the top bar, and the lyrics fade out under it.
 
 ### Fixed
 - Notification dots on the bell, on the profile photo and in the What's New feed were grey. They take the accent colour now.
+- Rows showed through a playlist's title bar while it faded in, and between the title bar and the column header.
+- Grey square behind the Marketplace button.
 
 ## v1.3.1
 Fixes for Spotify 1.3.9 and Spicetify 2.46.7, which renamed some internal classes.

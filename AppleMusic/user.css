@@ -18,19 +18,12 @@
   /* Controls (buttons, search) are small glass capsules floating over the page */
   --am-glass-ctl: rgba(var(--spice-rgb-player), 0.46);
   --am-glass-ctl-hover: rgba(var(--spice-rgb-player), 0.64);
-  /* Sticky bars do not end on a hard edge: a veil in the page colour, flat then fading out downwards.
-     It carries no blur: a masked backdrop-filter mixes the sharp and the blurred page, which reads as bands
-     of sharp, blurred, sharp. */
-  /* The global bar's veil: solid behind the whole bar, then it fades out over 30px below it */
-  --am-scrim-nav: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0.86) var(--am-nav-height),
+  /* Sticky bars are solid in the page colour and only fade out below the last one. Every stacked bar (the
+     global bar, a page's title bar, filter chips, list headers) is fully opaque, so where two meet there is
+     nothing to add up and no line. No blur: a masked backdrop-filter reads as bands of sharp, blurred, sharp. */
+  /* A sticky bar under the global bar: solid over its height, fading out over the 24px below it */
+  --am-scrim-join: linear-gradient(to bottom, rgb(var(--spice-rgb-main)) calc(100% - 24px),
     rgba(var(--spice-rgb-main), 0));
-  /* The veil of a sticky bar that starts right under the global bar. Veils add up (two of 86% make 98%), so
-     over the 30px where the bar's veil is fading out this one ramps up by exactly what is missing: the total
-     stays at 86% and there is no bright line at the join. */
-  --am-scrim-join: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0), rgba(var(--spice-rgb-main), 0.38) 3px,
-    rgba(var(--spice-rgb-main), 0.61) 7.5px, rgba(var(--spice-rgb-main), 0.75) 15px,
-    rgba(var(--spice-rgb-main), 0.82) 22.5px, rgba(var(--spice-rgb-main), 0.86) 30px,
-    rgba(var(--spice-rgb-main), 0.86) calc(100% - 40px), rgba(var(--spice-rgb-main), 0));
   --am-glass-sheet: rgba(var(--spice-rgb-player), 0.56);
   /* Thin glass (bars, the player capsule) blurs little so the page stays readable underneath; sheets that
      carry text (menus, dialogs) blur more and are denser */
@@ -77,15 +70,16 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   height: var(--am-nav-height);
   border-bottom: 1px solid transparent;
 }
-/* The bar is not a slab: a veil on a pseudo-element fades out into the page, and the glass lives on the
-   controls only. The veil is a pseudo-element because a backdrop-filter on the bar itself would stop the
-   search suggestions panel inside it from blurring the page behind. */
+/* The bar is solid in the page colour and the glass lives on the controls only. The colour is on a
+   pseudo-element because a backdrop-filter on the bar itself would stop the search suggestions panel inside
+   it from blurring the page behind. */
 #global-nav-bar::after {
   content: "";
   position: absolute;
-  inset: 0 0 -30px;
+  /* Down over the bar's 1px transparent border too: rows showed through it as a dotted line */
+  inset: 0 0 -1px;
   z-index: -1;
-  background: var(--am-scrim-nav);
+  background: rgb(var(--spice-rgb-main));
   pointer-events: none;
 }
 /* Not #id: Spotify's own z-index during view transitions has to keep winning */
@@ -112,6 +106,20 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 }
 #main-view .main-topBar-container {
   top: var(--am-nav-height);
+}
+/* The page fades out under the global bar over 30px. The fade belongs to the page, not to the bar: the bar is
+   above the whole page, so a fade hanging from it covered the top of a page's title bar (play button, name).
+   z-index 0 keeps it over the rows and under the title bar (1) and the list header (2). */
+#main-view::after {
+  content: "";
+  position: absolute;
+  top: var(--am-nav-height);
+  left: 0;
+  right: 0;
+  height: 30px;
+  z-index: 0;
+  background: linear-gradient(to bottom, rgb(var(--spice-rgb-main)), rgba(var(--spice-rgb-main), 0));
+  pointer-events: none;
 }
 .main-view-container__scroll-node > [data-overlayscrollbars-viewport] {
   padding-top: var(--am-nav-height) !important;
@@ -364,7 +372,7 @@ button[aria-checked="true"] svg,
 [role="grid"] [role="row"][aria-rowindex="1"] {
   border-bottom: 1px solid var(--am-separator);
 }
-/* The sticky column header gets the veil's page colour once stuck (no blur: a blurred band with a hard top
+/* The sticky column header gets the bars' solid page colour once stuck (no blur: a blurred band with a hard top
    edge showed as sharp rows, then a blurred strip, then sharp rows). Spotify's own "stuck" detection is
    thrown off by the scroller padding above, so the browser's scroll-state query decides.
    No :has() anywhere in this file: it made every hover re-style the whole page (~400 ms freezes). */
@@ -375,19 +383,8 @@ button[aria-checked="true"] svg,
   #main-view [role="grid"] > [role="presentation"]:first-child > div:first-child {
     margin: 0 calc(-1 * var(--content-spacing));
     padding: 0 var(--content-spacing);
-    background: rgba(var(--spice-rgb-main), 0.97);
-    position: relative;
-  }
-  /* The band fades in above its top edge, so a row passing under it is not cut in half by a hard line */
-  #main-view [role="grid"] > [role="presentation"]:first-child > div:first-child::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 100%;
-    height: 24px;
-    background: linear-gradient(to top, rgba(var(--spice-rgb-main), 0.97), rgba(var(--spice-rgb-main), 0));
-    pointer-events: none;
+    /* Solid like the page title bar above it, so the two meet without a seam */
+    background: rgb(var(--spice-rgb-main));
   }
 }
 
@@ -475,12 +472,18 @@ button[aria-checked="true"] svg,
   border-radius: 0 !important;
   background: none !important;
 }
-/* Spotify fades this element in as content scrolls under it: the veil follows */
-.main-topBar-background::before {
+/* Spotify fades the background in as content scrolls under it. The bar's solid colour sits on the bar instead
+   and follows --am-tb, set by theme.js from that opacity but ramping faster, so a half-faded bar does not show
+   the rows. Without the script the variable is unset and the bar stays clear. The bar has contain: content,
+   which clips anything hanging below it, so the colour stays inside: the list header under it is solid too. */
+.main-topBar-container::before {
   content: "";
   position: absolute;
-  inset: 0 0 -24px;
-  background: var(--am-scrim-join);
+  inset: 0;
+  /* Under the play button and the title: the bar is its own stacking context (z-index 1) */
+  z-index: -1;
+  background: rgb(var(--spice-rgb-main));
+  opacity: var(--am-tb, 0);
   pointer-events: none;
 }
 .main-topBar-background::after {
@@ -688,6 +691,16 @@ section[data-testid$="-page"] div[style*="--background-base"] {
 }
 .am-lyrics #main-view > div {
   background: transparent !important;
+}
+/* The blurred cover runs up behind the global bar: no solid bar and no page fade here. The lyrics fade out
+   under the bar instead, so a line scrolling up never sits behind the controls. */
+.am-lyrics #global-nav-bar::after,
+.am-lyrics #main-view::after {
+  display: none;
+}
+.am-lyrics .main-view-container__scroll-node > [data-overlayscrollbars-viewport] {
+  -webkit-mask-image: linear-gradient(to bottom, transparent var(--am-nav-height), #000 calc(var(--am-nav-height) + 48px));
+  mask-image: linear-gradient(to bottom, transparent var(--am-nav-height), #000 calc(var(--am-nav-height) + 48px));
 }
 [style*="--lyrics-color-background"] {
   --lyrics-color-background: transparent !important;

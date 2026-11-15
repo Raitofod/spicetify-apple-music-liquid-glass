@@ -1,6 +1,6 @@
 {
   "name": "Apple Music Liquid Glass",
-  "description": "Apple Music + Liquid Glass for Spotify: frosted see-through bars, a floating glass player, lyrics over blurred artwork. Dark & Light.",
+  "description": "Apple Music + Liquid Glass for Spotify: frosted glass controls, a floating glass player, lyrics over blurred artwork. Dark & Light, with a one-click switch.",
   "preview": "images/preview.png",
   "readme": "README.md",
   "usercss": "AppleMusic/user.css",

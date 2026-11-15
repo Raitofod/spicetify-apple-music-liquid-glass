@@ -12,21 +12,22 @@
 [![Dark and Light](https://img.shields.io/badge/schemes-Dark%20%2B%20Light-1C1C1E)](#dark-or-light)
 [![Star this theme](https://img.shields.io/badge/%E2%98%85-Star%20this%20theme-FA2D48)](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers)
 
-![Spotify pages scrolling under frosted glass, the glass search suggestions and the lyrics over a blurred cover, switching between the Dark and Light schemes](images/demo.webp)
+![Spotify pages scrolling under the top bar's glass buttons, the glass search suggestions and the lyrics over a blurred cover, switching between the Dark and Light schemes](images/demo.webp)
 
 **[Install](#installation) · [Screenshots](#screenshots) · [Report a bug](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/issues/new/choose)**
 
 </div>
 
-Pages scroll under see-through bars and a floating glass player, lyrics sit on your blurred album art, and everything gets rounded covers and the Apple Music pink accent.
+Glass buttons float over a clean top bar, pages scroll under a floating glass player, lyrics sit on your blurred album art, and everything gets rounded covers and the Apple Music pink accent.
 
 **Like it? [Leave a star](https://github.com/Raitofod/spicetify-apple-music-liquid-glass/stargazers).** The Marketplace ranks themes by stars, so each one helps other people find this theme.
 
 ## Why this theme
 
-- **Real glass.** The top bar, the search suggestions, the filter bars, track list headers, menus and dialogs blur the page scrolling behind them.
+- **Real glass.** The top bar's buttons and search field are glass capsules, and the search suggestions, menus and dialogs blur the page behind them.
+- **Clean sticky bars.** The top bar, a page's title bar, the filter bars and track list headers are solid in the page colour and fade out below, so no row ever shows through a title.
 - **Floating player.** The now-playing bar is a rounded glass capsule, with pages, the library and side panels scrolling underneath.
-- **Immersive pages.** Artist and playlist photos run up under the glass and fade into the page, with no tinted Spotify gradients.
+- **Immersive pages.** Artist and playlist photos run up to the top bar and fade into the page, with no tinted Spotify gradients.
 - **Lyrics over your artwork.** The lyrics page and the fullscreen view show the current cover, blurred, and follow every track change.
 - **Apple Music details.** Rounded covers, big bold titles and the `#FA2D48` pink accent, with no leftover Spotify green.
 - **Fast.** The theme avoids `:has()` selectors, which caused freezes of about 400 ms when moving the mouse quickly over track lists.
@@ -60,8 +61,8 @@ In the Marketplace, open the theme's settings and pick a colour scheme. By hand,
 | --- | --- |
 | **Glass search suggestions** | |
 | ![Dark scheme: search suggestions in a frosted glass panel over an artist page](images/search.png) | ![Light scheme: search suggestions in a frosted glass panel over an artist page](images/light-search.png) |
-| **Playlist under the glass bar** | |
-| ![Dark scheme: playlist page with its photo under the glass top bar](images/playlist.png) | ![Light scheme: playlist page with its photo under the glass top bar](images/light-playlist.png) |
+| **Playlist page** | |
+| ![Dark scheme: playlist page with its photo fading into the page under the glass buttons of the top bar](images/playlist.png) | ![Light scheme: playlist page with its photo fading into the page under the glass buttons of the top bar](images/light-playlist.png) |
 | **Lyrics over the blurred cover** | |
 | ![Dark scheme: lyrics over a dark blurred cover](images/lyrics.png) | ![Light scheme: lyrics over a light blurred cover](images/light-lyrics.png) |
 
@@ -74,10 +75,10 @@ In the Marketplace, open the theme's settings and pick a colour scheme. By hand,
 | ![Dark scheme: fullscreen lyrics over the blurred cover](images/fullscreen.png) | ![Light scheme: fullscreen lyrics over the blurred cover](images/light-fullscreen.png) |
 | **Artist page** | |
 | ![Dark scheme: artist page fading into the black page](images/artist.png) | ![Light scheme: artist page fading into the white page](images/light-artist.png) |
-| **Glass filter bar on search results** | |
-| ![Dark scheme: search results scrolling under a glass filter bar](images/search-results.png) | ![Light scheme: search results scrolling under a glass filter bar](images/light-search-results.png) |
-| **Sticky glass header** | |
-| ![Dark scheme: album track list scrolling under the glass header](images/album.png) | ![Light scheme: album track list scrolling under the glass header](images/light-album.png) |
+| **Filter bar on search results** | |
+| ![Dark scheme: search results scrolling under the sticky filter bar](images/search-results.png) | ![Light scheme: search results scrolling under the sticky filter bar](images/light-search-results.png) |
+| **Sticky title bar and track list header** | |
+| ![Dark scheme: album track list scrolling under the sticky title bar and column header](images/album.png) | ![Light scheme: album track list scrolling under the sticky title bar and column header](images/light-album.png) |
 | **Glass context menu** | |
 | ![Dark scheme: right-click menu with a frosted glass background](images/menu.png) | ![Light scheme: right-click menu with a frosted glass background](images/light-menu.png) |
 
@@ -134,7 +135,7 @@ This is a fan-made theme. It is not affiliated with, endorsed by or connected to
 | --- | --- |
 | `AppleMusic/color.ini` | The `Dark` and `Light` colour schemes |
 | `AppleMusic/user.css` | All the styling |
-| `AppleMusic/theme.js` | Small helpers that CSS cannot do alone. It rounds covers without squaring artist pictures, feeds the current cover to the lyrics background and flags the current page. This is why the Marketplace shows an "external JS" tag. |
+| `AppleMusic/theme.js` | Small helpers that CSS cannot do alone. It rounds covers without squaring artist pictures, feeds the current cover to the lyrics background, flags the current page, keeps a page's title bar solid while Spotify fades it in, and runs the Light/Dark button. This is why the Marketplace shows an "external JS" tag. |
 
 ## Compatibility
 

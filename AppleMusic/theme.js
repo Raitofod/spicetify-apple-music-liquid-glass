@@ -16,7 +16,9 @@
   // The page state checks scan the whole DOM: at most five times a second, not on every frame
   let viewsQueued = 0;
   function queueViews() {
-    if (!viewsQueued) viewsQueued = setTimeout(() => { viewsQueued = 0; setCover(); flagViews(); }, 200);
+    if (!viewsQueued) viewsQueued = setTimeout(() => { viewsQueued = 0; setCover(); flagViews();
+      document.querySelectorAll(".main-topBar-background").forEach(syncTopBar);
+    }, 200);
   }
   new MutationObserver(() => {
     if (!queued) { queued = true; requestAnimationFrame(tag); }
@@ -24,6 +26,19 @@
   }).observe(document.body, { childList: true, subtree: true });
   tag();
   queueViews();
+
+  // Spotify fades the page top bar's background in as content scrolls under it, by setting its inline opacity.
+  // A solid colour following that opacity let the rows show through the title halfway through the fade, so the
+  // colour reads --am-tb on the bar instead, which ramps up three times as fast.
+  function syncTopBar(bg) {
+    const op = parseFloat(bg.style.opacity);
+    bg.parentElement?.style.setProperty("--am-tb", Number.isNaN(op) ? "0" : String(Math.min(1, op * 3)));
+  }
+  new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      if (m.target.classList?.contains("main-topBar-background")) syncTopBar(m.target);
+    }
+  }).observe(document.body, { attributes: true, attributeFilter: ["style"], subtree: true });
 
   // Exposes the playing cover as --am-cover for the blurred lyrics backdrop. Runs from the mutation observer:
   // Spicetify.Player can stay empty after a cold start, while Spotify's own player state is already there.
