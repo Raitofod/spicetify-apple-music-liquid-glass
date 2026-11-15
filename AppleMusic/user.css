@@ -152,15 +152,19 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 
 /* ---------- Global bar ---------- */
 /* Round buttons: Home by position (the avatar sits at the same depth, with a test id),
-   custom app links by Spicetify's own class */
+   custom app links by Spicetify's own class.
+   macOS: Spicetify has no macOS names for the global bar's classes (main-globalNav-*, main-actionButtons), so
+   each of them comes with a match on structure or on Spicetify's own custom-navlink. */
 #global-nav-bar > div > div > button:not([data-testid]),
-#global-nav-bar .main-globalNav-navLink {
+#global-nav-bar .main-globalNav-navLink,
+#global-nav-bar .custom-navlink {
   color: var(--spice-subtext);
   border-radius: 50%;
   transition: background-color .2s, color .2s, transform .15s;
 }
 #global-nav-bar > div > div > button:not([data-testid]):hover,
-#global-nav-bar .main-globalNav-navLink:hover {
+#global-nav-bar .main-globalNav-navLink:hover,
+#global-nav-bar .custom-navlink:hover {
   background: var(--am-glass-ctl-hover) !important;
   color: var(--spice-text);
   transform: scale(1.05);
@@ -168,8 +172,11 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 /* One look for every control: a glass capsule with a lit rim */
 #global-nav-bar > div > div > button:not([data-testid]),
 #global-nav-bar .main-globalNav-navLink,
+#global-nav-bar .custom-navlink,
 #global-nav-bar .main-globalNav-historyButtons,
+#global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container),
 #global-nav-bar .main-actionButtons,
+#global-nav-bar > div:last-of-type > div:first-child > div:first-child,
 #global-nav-bar form[role="search"] input {
   background: var(--am-glass-ctl) !important;
   -webkit-backdrop-filter: var(--am-blur);
@@ -184,7 +191,9 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
 }
 /* Back / forward / theme buttons and the bell / friends buttons share a capsule each */
 #global-nav-bar .main-globalNav-historyButtons,
-#global-nav-bar .main-actionButtons {
+#global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container),
+#global-nav-bar .main-actionButtons,
+#global-nav-bar > div:last-of-type > div:first-child > div:first-child {
   box-sizing: border-box;
   align-self: center;
   align-items: center;
@@ -192,7 +201,8 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   padding: 0 6px;
   border-radius: 999px;
 }
-#global-nav-bar .main-globalNav-historyButtons {
+#global-nav-bar .main-globalNav-historyButtons,
+#global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container) {
   margin-left: -4px;
 }
 /* The current page's button keeps the accent on hover too (only its background lightens);
@@ -564,8 +574,10 @@ a:hover { text-decoration: none; }
   background: none !important;
 }
 /* The veil sits on a pseudo-element of the sticky container (always there, unlike the band above, which
-   Spotify only shows once it is stuck) so the fade does not mask the chips themselves */
-.main-home-filterChipsContainer::before {
+   Spotify only shows once it is stuck) so the fade does not mask the chips themselves. On macOS the class has
+   no name: the container is the one just before the home grid. */
+.main-home-filterChipsContainer::before,
+[data-testid="home-ads-container"] ~ div:not([data-testid]):nth-last-child(2)::before {
   content: "";
   position: absolute;
   inset: 0 0 -24px;

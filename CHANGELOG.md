@@ -14,6 +14,7 @@
 - Notification dots on the bell, on the profile photo and in the What's New feed were grey. They take the accent colour now.
 - Rows showed through a playlist's title bar while it faded in, and between the title bar and the column header.
 - Grey square behind the Marketplace button.
+- macOS: the top bar's glass capsules, the round Marketplace button and the solid filter bar on Home did not apply, because Spotify's class names differ on macOS. They now match on structure.
 
 ## v1.3.1
 Fixes for Spotify 1.3.9 and Spicetify 2.46.7, which renamed some internal classes.
