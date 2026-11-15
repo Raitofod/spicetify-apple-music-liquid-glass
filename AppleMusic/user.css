@@ -21,13 +21,15 @@
   /* Sticky bars do not end on a hard edge: a veil in the page colour, flat then fading out downwards.
      It carries no blur: a masked backdrop-filter mixes the sharp and the blurred page, which reads as bands
      of sharp, blurred, sharp. */
-  --am-scrim: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0.86) 50%, rgba(var(--spice-rgb-main), 0));
-  /* The global bar's veil: solid behind the whole bar, then it fades out below it */
+  /* The global bar's veil: solid behind the whole bar, then it fades out over 30px below it */
   --am-scrim-nav: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0.86) var(--am-nav-height),
     rgba(var(--spice-rgb-main), 0));
-  /* Same veil, but it also fades in at its top, for a bar that starts under another veil (a hard start would
-     show as a line) */
-  --am-scrim-soft: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0), rgba(var(--spice-rgb-main), 0.86) 24px,
+  /* The veil of a sticky bar that starts right under the global bar. Veils add up (two of 86% make 98%), so
+     over the 30px where the bar's veil is fading out this one ramps up by exactly what is missing: the total
+     stays at 86% and there is no bright line at the join. */
+  --am-scrim-join: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0), rgba(var(--spice-rgb-main), 0.38) 3px,
+    rgba(var(--spice-rgb-main), 0.61) 7.5px, rgba(var(--spice-rgb-main), 0.75) 15px,
+    rgba(var(--spice-rgb-main), 0.82) 22.5px, rgba(var(--spice-rgb-main), 0.86) 30px,
     rgba(var(--spice-rgb-main), 0.86) calc(100% - 40px), rgba(var(--spice-rgb-main), 0));
   --am-glass-sheet: rgba(var(--spice-rgb-player), 0.56);
   /* Thin glass (bars, the player capsule) blurs little so the page stays readable underneath; sheets that
@@ -369,6 +371,18 @@ button[aria-checked="true"] svg,
     margin: 0 calc(-1 * var(--content-spacing));
     padding: 0 var(--content-spacing);
     background: rgba(var(--spice-rgb-main), 0.97);
+    position: relative;
+  }
+  /* The band fades in above its top edge, so a row passing under it is not cut in half by a hard line */
+  #main-view [role="grid"] > [role="presentation"]:first-child > div:first-child::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100%;
+    height: 24px;
+    background: linear-gradient(to top, rgba(var(--spice-rgb-main), 0.97), rgba(var(--spice-rgb-main), 0));
+    pointer-events: none;
   }
 }
 
@@ -461,7 +475,7 @@ button[aria-checked="true"] svg,
   content: "";
   position: absolute;
   inset: 0 0 -24px;
-  background: var(--am-scrim);
+  background: var(--am-scrim-join);
   pointer-events: none;
 }
 .main-topBar-background::after {
@@ -546,9 +560,9 @@ a:hover { text-decoration: none; }
 .main-home-filterChipsContainer::before {
   content: "";
   position: absolute;
-  inset: -24px 0 -24px;
+  inset: 0 0 -24px;
   z-index: -1;
-  background: var(--am-scrim-soft);
+  background: var(--am-scrim-join);
   pointer-events: none;
 }
 /* Its own 60% black veil would turn the glass dark grey on the Light scheme */
@@ -622,9 +636,9 @@ a:hover { text-decoration: none; }
 .am-search .main-view-container__scroll-node-child > main > div > div:first-child::before {
   content: "";
   position: absolute;
-  inset: -24px 0 -24px;
+  inset: 0 0 -24px;
   z-index: -1;
-  background: var(--am-scrim-soft);
+  background: var(--am-scrim-join);
   pointer-events: none;
 }
 [data-testid="entity-header"] > div[style*="background-color"],
