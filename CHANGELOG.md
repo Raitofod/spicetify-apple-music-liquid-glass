@@ -2,6 +2,7 @@
 
 ## Unreleased
 ### Changed
+- Cleaner top bar: no more full-width glass slab with a hard edge. The bar fades into the page, and the glass lives on the controls themselves: back / forward / theme buttons share one capsule, so do the bell and friends buttons, and the search field and round buttons get the same lit rim. The sticky filter bars on Home and on search results fade out the same way.
 - Sharper liquid glass: the bars and the player blur much less (4px instead of 18px) and tint less, so you can see what scrolls underneath. The edge catches the light all round. Menus and dialogs, which carry text, keep a stronger blur and a denser tint.
 
 ### New
