@@ -18,10 +18,14 @@
   /* Controls (buttons, search) are small glass capsules floating over the page */
   --am-glass-ctl: rgba(var(--spice-rgb-player), 0.46);
   --am-glass-ctl-hover: rgba(var(--spice-rgb-player), 0.64);
-  /* Sticky bars do not end on a hard edge: a veil in the page colour that fades out downwards */
-  --am-scrim: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0.72), rgba(var(--spice-rgb-main), 0.40) 60%,
-    rgba(var(--spice-rgb-main), 0));
-  --am-scrim-mask: linear-gradient(to bottom, #000 50%, transparent);
+  /* Sticky bars do not end on a hard edge: a veil in the page colour, flat then fading out downwards.
+     It carries no blur: a masked backdrop-filter mixes the sharp and the blurred page, which reads as bands
+     of sharp, blurred, sharp. */
+  --am-scrim: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0.86) 50%, rgba(var(--spice-rgb-main), 0));
+  /* Same veil, but it also fades in at its top, for a bar that starts under another veil (a hard start would
+     show as a line) */
+  --am-scrim-soft: linear-gradient(to bottom, rgba(var(--spice-rgb-main), 0), rgba(var(--spice-rgb-main), 0.86) 24px,
+    rgba(var(--spice-rgb-main), 0.86) calc(100% - 40px), rgba(var(--spice-rgb-main), 0));
   --am-glass-sheet: rgba(var(--spice-rgb-player), 0.56);
   /* Thin glass (bars, the player capsule) blurs little so the page stays readable underneath; sheets that
      carry text (menus, dialogs) blur more and are denser */
@@ -77,10 +81,6 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   inset: 0 0 -30px;
   z-index: -1;
   background: var(--am-scrim);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  backdrop-filter: blur(8px) saturate(150%);
-  -webkit-mask-image: var(--am-scrim-mask);
-  mask-image: var(--am-scrim-mask);
   pointer-events: none;
 }
 /* Not #id: Spotify's own z-index during view transitions has to keep winning */
@@ -541,10 +541,6 @@ a:hover { text-decoration: none; }
   inset: 0 0 -24px;
   z-index: -1;
   background: var(--am-scrim);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  backdrop-filter: blur(8px) saturate(150%);
-  -webkit-mask-image: var(--am-scrim-mask);
-  mask-image: var(--am-scrim-mask);
   pointer-events: none;
 }
 /* Its own 60% black veil would turn the glass dark grey on the Light scheme */
@@ -618,13 +614,9 @@ a:hover { text-decoration: none; }
 .am-search .main-view-container__scroll-node-child > main > div > div:first-child::before {
   content: "";
   position: absolute;
-  inset: 0 0 -24px;
+  inset: -24px 0 -24px;
   z-index: -1;
-  background: var(--am-scrim);
-  -webkit-backdrop-filter: blur(8px) saturate(150%);
-  backdrop-filter: blur(8px) saturate(150%);
-  -webkit-mask-image: var(--am-scrim-mask);
-  mask-image: var(--am-scrim-mask);
+  background: var(--am-scrim-soft);
   pointer-events: none;
 }
 [data-testid="entity-header"] > div[style*="background-color"],
