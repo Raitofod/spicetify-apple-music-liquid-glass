@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+### Changed
+- Sharper liquid glass: the bars and the player blur much less (4px instead of 18px) and tint less, so you can see what scrolls underneath. The edge catches the light all round. Menus and dialogs, which carry text, keep a stronger blur and a denser tint.
+
 ### New
 - Light/Dark switch: a button in the top bar flips the current scheme to its twin and keeps your accent. The choice is remembered across restarts.
 
