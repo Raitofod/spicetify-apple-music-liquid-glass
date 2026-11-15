@@ -723,3 +723,11 @@ section[data-testid$="-page"] > div[style*="--background-base"] {
 #Desktop_PanelContainer_Id figure::after {
   background: var(--am-accent);
 }
+
+/* Notification dots (bell, profile photo, What's New feed) draw with --spice-notification, which color.ini keeps
+   grey for tooltips and banners. Tooltips live outside these areas, so only the dots take the accent.
+   .am-feed comes from theme.js. */
+#global-nav-bar,
+.am-feed main {
+  --spice-notification: var(--am-accent);
+}

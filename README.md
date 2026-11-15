@@ -37,6 +37,8 @@ Two complete colour schemes, lyrics and fullscreen views included.
 
 ![The lyrics page, half in the Dark scheme and half in the Light scheme](images/dark-light.png)
 
+A button in the top bar, next to the back and forward arrows, switches between the two at any time. It keeps your accent (`Dark-Orange` becomes `Light-Orange`) and remembers the choice when you restart Spotify. If you pick another colour scheme in the Marketplace or with `spicetify config`, the choice is dropped and the new scheme applies as is.
+
 ## Accent colours
 
 Apple Music is red, but you don't have to be. Each of Dark and Light comes in five more accents, taken from Apple's own system colours: Pink, Orange, Blue, Purple and Green.

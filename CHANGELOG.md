@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+### New
+- Light/Dark switch: a button in the top bar flips the current scheme to its twin and keeps your accent. The choice is remembered across restarts.
+
+### Fixed
+- Notification dots on the bell, on the profile photo and in the What's New feed were grey. They take the accent colour now.
+
 ## v1.3.1
 Fixes for Spotify 1.3.9 and Spicetify 2.46.7, which renamed some internal classes.
 

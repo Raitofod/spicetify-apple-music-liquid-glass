@@ -72,8 +72,80 @@
       flagViews();
       root.toggle("am-home", loc.pathname === "/");
       root.toggle("am-search", loc.pathname.startsWith("/search/"));
+      root.toggle("am-feed", loc.pathname === "/content-feed");
     };
     history.listen(flag);
     flag(history.location);
   })();
+})();
+
+// Light/Dark switch: a button in the top bar flips the current scheme to its twin (Dark-Orange <-> Light-Orange).
+// The colours are plain --spice-* variables, so it sets them on <html> without touching Spicetify's config,
+// and remembers the choice. The palettes below mirror color.ini; change both together.
+(function schemeSwitch() {
+  const DARK = {text:"FFFFFF",subtext:"99999D",main:"000000","main-elevated":"1C1C1E",highlight:"2C2C2E","highlight-elevated":"3A3A3C",sidebar:"0D0D0F",player:"1C1C1E",card:"1C1C1E",shadow:"000000","selected-row":"FFFFFF","button-disabled":"48484A","tab-active":"2C2C2E",notification:"2C2C2E","notification-error":"FF453A",misc:"48484A"};
+  const LIGHT = {text:"000000",subtext:"6E6E73",main:"FFFFFF","main-elevated":"F2F2F7",highlight:"E5E5EA","highlight-elevated":"D1D1D6",sidebar:"F5F5F7",player:"F2F2F7",card:"F2F2F7",shadow:"8E8E93","selected-row":"000000","button-disabled":"C7C7CC","tab-active":"E5E5EA",notification:"E5E5EA","notification-error":"FF3B30",misc:"C7C7CC"};
+  // [dark button, dark hover, light button, light hover, text on the accent (optional)]
+  const ACCENTS = {Red:["FA2D48","FF4F7B","FA2D48","E0203E"], Pink:["FF375F","FF6482","FF2D55","E0204A"], Orange:["FF9F0A","FFB340","FF9500","E08600","1C1C1E"], Blue:["0A84FF","409CFF","007AFF","0062CC"], Purple:["BF5AF2","DA8FFF","AF52DE","9640C4"], Green:["30D158","5DE07F","34C759","28A745","1C1C1E"]};
+  const KEY = "am-scheme";
+  const SUN = '<svg role="img" height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>';
+  const MOON = '<svg role="img" height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.2 1.5A6.5 6.5 0 1 0 14.5 9.8 5.2 5.2 0 0 1 6.2 1.5z"/></svg>';
+  const root = document.documentElement;
+  const read = (k) => getComputedStyle(root).getPropertyValue("--spice-" + k).trim().replace("#", "").toUpperCase();
+  let base, accent, mode, sig;
+
+  function palette(target) {
+    const a = ACCENTS[accent], i = target === "Dark" ? 0 : 2;
+    const p = { ...(target === "Dark" ? DARK : LIGHT), button: a[i], "button-active": a[i + 1] };
+    if (a[4]) p["on-accent"] = a[4];
+    return p;
+  }
+  function apply(target) {
+    mode = target;
+    const keys = Object.keys(palette(target));
+    for (const k of new Set([...keys, "on-accent"])) {
+      const v = target !== base && palette(target)[k];
+      if (v) {
+        root.style.setProperty("--spice-" + k, "#" + v.toLowerCase());
+        root.style.setProperty("--spice-rgb-" + k, [0, 2, 4].map((n) => parseInt(v.slice(n, n + 2), 16)).join(","));
+      } else {
+        root.style.removeProperty("--spice-" + k);
+        root.style.removeProperty("--spice-rgb-" + k);
+      }
+    }
+    try {
+      if (target === base) localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, JSON.stringify({ sig, mode: target }));
+    } catch (e) { /* storage blocked: the switch still works for this session */ }
+  }
+
+  function init() {
+    const main = read("main"), button = read("button");
+    if (!main || !button) return setTimeout(init, 300);
+    base = main === "000000" ? "Dark" : main === "FFFFFF" ? "Light" : null;
+    accent = Object.keys(ACCENTS).find((n) => ACCENTS[n][base === "Dark" ? 0 : 2] === button);
+    // A custom colour scheme is left alone: there is no twin to switch to
+    if (!base || !accent) return;
+    sig = main + button;
+    mode = base;
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+      // A choice made on another scheme (changed in the Marketplace or with spicetify config) is dropped
+      if (saved && saved.sig === sig && (saved.mode === "Dark" || saved.mode === "Light")) apply(saved.mode);
+      else if (saved) localStorage.removeItem(KEY);
+    } catch (e) { /* ignore */ }
+    addButton();
+  }
+
+  function addButton() {
+    if (!window.Spicetify?.Topbar?.Button) return setTimeout(addButton, 300);
+    const label = () => (mode === "Dark" ? "Switch to Light" : "Switch to Dark");
+    const icon = () => (mode === "Dark" ? SUN : MOON);
+    const button = new Spicetify.Topbar.Button(label(), icon(), () => {
+      apply(mode === "Dark" ? "Light" : "Dark");
+      button.label = label();
+      button.icon = icon();
+    });
+  }
+  init();
 })();
