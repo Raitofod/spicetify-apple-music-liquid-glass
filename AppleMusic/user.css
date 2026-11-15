@@ -169,6 +169,11 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   box-shadow: var(--am-rim), 0 4px 14px rgba(0, 0, 0, 0.18);
   border: 1px solid var(--am-glass-edge) !important;
 }
+/* Spicetify's custom links (Marketplace) sit in a scroller exactly as big as the button: it would clip the
+   outer shadow into a grey square behind the round button. Only the lit rim stays there. */
+#global-nav-bar .custom-navlinks-scrollable_container button {
+  box-shadow: var(--am-rim);
+}
 /* Back / forward / theme buttons and the bell / friends buttons share a capsule each */
 #global-nav-bar .main-globalNav-historyButtons,
 #global-nav-bar .main-actionButtons {
