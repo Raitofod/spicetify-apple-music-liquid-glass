@@ -198,12 +198,24 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   align-self: center;
   align-items: center;
   height: 40px;
-  padding: 0 6px;
+  padding: 0 7px;
   border-radius: 999px;
+  /* The buttons already carry empty space around their icons: no gap on top of it, so the icons sit ~15px
+     from each other and from the rim */
+  gap: 0;
 }
 #global-nav-bar .main-globalNav-historyButtons,
 #global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container) {
   margin-left: -4px;
+  /* Beats the gap and padding Spicetify sets inline on Windows (and can't set on macOS) */
+  gap: 0 !important;
+  padding-inline: 9px !important;
+}
+/* The Light/Dark button gets a slot as wide as the arrows'; the sun fills its 16px box where the chevrons
+   leave 5-8px around theirs, so it is pushed off the forward arrow by the difference */
+#am-scheme-switch {
+  width: 24px;
+  margin-left: 5px;
 }
 /* The current page's button keeps the accent on hover too (only its background lightens);
    these come after the hover rule above and tie on specificity, so they win */

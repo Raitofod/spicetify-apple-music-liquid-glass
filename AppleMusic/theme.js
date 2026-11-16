@@ -135,32 +135,63 @@
   }
 
   function init() {
+    // Back to the scheme's own colours first: the Marketplace swaps schemes live, without a reload
+    for (const k of [...Object.keys(DARK), "button", "button-active", "on-accent"]) {
+      root.style.removeProperty("--spice-" + k);
+      root.style.removeProperty("--spice-rgb-" + k);
+    }
     const main = read("main"), button = read("button");
     if (!main || !button) return setTimeout(init, 300);
     base = main === "000000" ? "Dark" : main === "FFFFFF" ? "Light" : null;
     accent = Object.keys(ACCENTS).find((n) => ACCENTS[n][base === "Dark" ? 0 : 2] === button);
     // A custom colour scheme is left alone: there is no twin to switch to
-    if (!base || !accent) return;
-    sig = main + button;
-    mode = base;
-    try {
-      const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-      // A choice made on another scheme (changed in the Marketplace or with spicetify config) is dropped
-      if (saved && saved.sig === sig && (saved.mode === "Dark" || saved.mode === "Light")) apply(saved.mode);
-      else if (saved) localStorage.removeItem(KEY);
-    } catch (e) { /* ignore */ }
-    addButton();
+    if (!accent) base = null;
+    if (base) {
+      sig = main + button;
+      mode = base;
+      try {
+        const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+        // A choice made on another scheme (changed in the Marketplace or with spicetify config) is dropped
+        if (saved && saved.sig === sig && (saved.mode === "Dark" || saved.mode === "Light")) apply(saved.mode);
+        else if (saved) localStorage.removeItem(KEY);
+      } catch (e) { /* ignore */ }
+    }
+    placeButton();
   }
+  new MutationObserver((mutations) => {
+    if (mutations.some((m) => [...m.addedNodes].some((n) => n.matches?.("style.marketplaceScheme")))) init();
+  }).observe(document.body, { childList: true });
 
-  function addButton() {
-    if (!window.Spicetify?.Topbar?.Button) return setTimeout(addButton, 300);
-    const label = () => (mode === "Dark" ? "Switch to Light" : "Switch to Dark");
-    const icon = () => (mode === "Dark" ? SUN : MOON);
-    const button = new Spicetify.Topbar.Button(label(), icon(), () => {
-      apply(mode === "Dark" ? "Light" : "Dark");
-      button.label = label();
-      button.icon = icon();
-    });
+  // The button goes in the back / forward capsule, found by its place in the top bar: Spicetify.Topbar.Button
+  // looks for class names that the macOS build doesn't have, so its buttons never show up there.
+  const CAPSULE = "#global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container)";
+  let switcher, tip;
+  function placeButton() {
+    if (!base) return switcher?.remove();
+    const capsule = document.querySelector(CAPSULE);
+    const arrow = capsule?.querySelector(":scope > button");
+    if (!arrow) return;
+    if (!switcher) {
+      switcher = document.createElement("button");
+      switcher.id = "am-scheme-switch";
+      switcher.onclick = () => { apply(mode === "Dark" ? "Light" : "Dark"); placeButton(); };
+      tip = window.Spicetify?.Tippy?.(switcher, { content: "", ...Spicetify.TippyProps });
+    }
+    const label = mode === "Dark" ? "Switch to Light" : "Switch to Dark";
+    switcher.className = arrow.className;
+    switcher.setAttribute("aria-label", label);
+    if (tip) tip.setContent(label); else switcher.title = label;
+    // Same icon wrapper as the arrows, so it gets their size and spacing
+    switcher.innerHTML = `<span aria-hidden="true" class="${arrow.firstElementChild?.className || ""}">${mode === "Dark" ? SUN : MOON}</span>`;
+    if (switcher.parentElement !== capsule) capsule.append(switcher);
   }
+  // Spotify can rebuild the top bar (window resize, some pages): put the button back when it goes
+  let placing = false;
+  new MutationObserver(() => {
+    if (base && !switcher?.isConnected && !placing) {
+      placing = true;
+      setTimeout(() => { placing = false; placeButton(); }, 50);
+    }
+  }).observe(document.body, { childList: true, subtree: true });
   init();
 })();

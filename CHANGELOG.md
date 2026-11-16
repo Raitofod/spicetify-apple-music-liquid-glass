@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.1
+### Fixed
+- macOS: the Light/Dark button did not show up. Spicetify's top bar API looks for class names the macOS build doesn't have, so the theme now places the button itself, next to the back and forward arrows (#3).
+- Switching scheme in the Marketplace kept the colours forced by the button until a restart. The new scheme now applies right away.
+- Icons in the top bar capsules are spaced evenly: the sun no longer sits against the rim.
+
 ## v1.4
 ### New
 - Light/Dark switch: a button in the top bar flips the current scheme to its twin (`Dark-Orange` becomes `Light-Orange`) and keeps your accent. The choice is remembered across restarts.
