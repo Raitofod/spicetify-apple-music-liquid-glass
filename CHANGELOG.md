@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.3
+### Fixed
+- Right-click and "..." menus were almost opaque next to the rest of the theme (14px blur, dense tint). They now use the same sharp glass as the search suggestions and the top bar controls, so the page shows through them. Dialogs keep their denser glass.
+
 ## v1.4.2
 ### Fixed
 - The right panel had rounded corners against the window edge (added by Spicy Lyrics), which showed white notches in the Light scheme. It is square again.

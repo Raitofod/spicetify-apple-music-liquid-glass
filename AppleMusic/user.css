@@ -26,7 +26,7 @@
     rgba(var(--spice-rgb-main), 0));
   --am-glass-sheet: rgba(var(--spice-rgb-player), 0.56);
   /* Thin glass (bars, the player capsule) blurs little so the page stays readable underneath; sheets that
-     carry text (menus, dialogs) blur more and are denser */
+     carry long text (dialogs) blur more and are denser; menus use the thin glass */
   --am-blur: blur(4px) saturate(160%) brightness(0.98);
   --am-blur-sheet: blur(14px) saturate(160%) brightness(0.98);
   /* Liquid glass: a lit rim (top and left catch the light, bottom falls away) and a soft diagonal sheen */
@@ -553,6 +553,13 @@ button[aria-checked="true"] svg,
   border-radius: var(--am-radius-l) !important;
   box-shadow: var(--am-rim), 0 16px 48px rgba(0, 0, 0, 0.5);
 }
+/* Menus (right-click, "...") wear the same sharp glass as the search suggestions and the controls:
+   the page stays readable through them. */
+[role="menu"], [data-tippy-root] [role="menu"], .main-contextMenu-menu {
+  background: var(--am-glass-ctl) !important;
+  background-image: var(--am-sheen) !important;
+  box-shadow: var(--am-rim), 0 12px 32px rgba(0, 0, 0, 0.28);
+}
 /* A backdrop-filter on a menu traps its sub-menus (Add to playlist...) inside it, clipped
    and scrolling. Menus blur through a pseudo-element instead, which traps nothing. */
 [role="menu"], [data-tippy-root] [role="menu"], .main-contextMenu-menu {
@@ -566,8 +573,8 @@ button[aria-checked="true"] svg,
   z-index: -1;
   border-radius: inherit;
   pointer-events: none;
-  -webkit-backdrop-filter: var(--am-blur-sheet);
-  backdrop-filter: var(--am-blur-sheet);
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
 }
 [role="menuitem"], .main-contextMenu-menuItemButton {
   border-radius: var(--am-radius-s);
