@@ -1,5 +1,16 @@
 # Changelog
 
+## v1.4.4
+### New
+- Accent switch: a coloured dot sits first in the bell / friends capsule, the mirror of the Light/Dark button. Clicking it opens a glass pill with the six accents (Red, Pink, Orange, Blue, Purple, Green); the whole app follows, in Dark and in Light, and the choice is remembered. Works with the mouse and the keyboard (arrows, Escape).
+
+### Fixed
+- Hovering the play/pause button hid it in the Light scheme: Spotify painted its own near-white disc under the white glyph. The disc keeps its colour on hover now.
+
+### Changed
+- The theme is now licensed under the GNU General Public License v3.0 (previously MIT).
+- New README: banner, before/after and accent animations, install guide and FAQ.
+
 ## v1.4.3
 ### Fixed
 - Right-click and "..." menus were almost opaque next to the rest of the theme (14px blur, dense tint). They now use the same sharp glass as the search suggestions and the top bar controls, so the page shows through them. Dialogs keep their denser glass.

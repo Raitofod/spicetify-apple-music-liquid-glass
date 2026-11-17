@@ -164,103 +164,188 @@
   })();
 })();
 
-// Light/Dark switch: a button in the top bar flips the current scheme to its twin (Dark-Orange <-> Light-Orange).
-// The colours are plain --spice-* variables, so it sets them on <html> without touching Spicetify's config,
-// and remembers the choice. The palettes below mirror color.ini; change both together.
+// Light/Dark and accent switches, two buttons in the top bar placed symmetrically. The sun/moon flips the scheme
+// to its twin (Dark-Orange <-> Light-Orange); the accent dot opens a row of the six accents. The colours are plain
+// --spice-* variables, so they are set on <html> without touching Spicetify's config, and the choice is
+// remembered. The palettes below mirror color.ini; change both together.
 (function schemeSwitch() {
   const DARK = {text:"FFFFFF",subtext:"99999D",main:"000000","main-elevated":"1C1C1E",highlight:"2C2C2E","highlight-elevated":"3A3A3C",sidebar:"0D0D0F",player:"1C1C1E",card:"1C1C1E",shadow:"000000","selected-row":"FFFFFF","button-disabled":"48484A","tab-active":"2C2C2E",notification:"2C2C2E","notification-error":"FF453A",misc:"48484A"};
   const LIGHT = {text:"000000",subtext:"6E6E73",main:"FFFFFF","main-elevated":"F2F2F7",highlight:"E5E5EA","highlight-elevated":"D1D1D6",sidebar:"F5F5F7",player:"F2F2F7",card:"F2F2F7",shadow:"8E8E93","selected-row":"000000","button-disabled":"C7C7CC","tab-active":"E5E5EA",notification:"E5E5EA","notification-error":"FF3B30",misc:"C7C7CC"};
-  // [dark button, dark hover, light button, light hover, text on the accent (optional)]
+  // [dark button, dark hover, light button, light hover, text on the accent (white when absent)]
   const ACCENTS = {Red:["FA2D48","FF4F7B","FA2D48","E0203E"], Pink:["FF375F","FF6482","FF2D55","E0204A"], Orange:["FF9F0A","FFB340","FF9500","E08600","1C1C1E"], Blue:["0A84FF","409CFF","007AFF","0062CC"], Purple:["BF5AF2","DA8FFF","AF52DE","9640C4"], Green:["30D158","5DE07F","34C759","28A745","1C1C1E"]};
   const KEY = "am-scheme";
   const SUN = '<svg role="img" height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg>';
   const MOON = '<svg role="img" height="16" width="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6.2 1.5A6.5 6.5 0 1 0 14.5 9.8 5.2 5.2 0 0 1 6.2 1.5z"/></svg>';
+  // The current accent as a drop of colour lit from the top left, like the glass
+  const DOT = '<svg role="img" height="16" width="16" viewBox="0 0 16 16"><defs><radialGradient id="am-drop-light" cx="34%" cy="28%" r="62%"><stop offset="0" stop-color="#fff" stop-opacity=".62"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><circle cx="8" cy="8" r="7" style="fill:var(--spice-button)"/><circle cx="8" cy="8" r="7" fill="url(#am-drop-light)"/><circle cx="8" cy="8" r="6.6" fill="none" stroke="#000" stroke-opacity=".14" stroke-width=".8"/></svg>';
   const root = document.documentElement;
   const read = (k) => getComputedStyle(root).getPropertyValue("--spice-" + k).trim().replace("#", "").toUpperCase();
-  let base, accent, mode, sig;
+  let base, baseAccent, accent, mode, sig;
 
-  function palette(target) {
-    const a = ACCENTS[accent], i = target === "Dark" ? 0 : 2;
-    const p = { ...(target === "Dark" ? DARK : LIGHT), button: a[i], "button-active": a[i + 1] };
-    if (a[4]) p["on-accent"] = a[4];
-    return p;
+  function palette(target, acc) {
+    const a = ACCENTS[acc], i = target === "Dark" ? 0 : 2;
+    return { ...(target === "Dark" ? DARK : LIGHT), button: a[i], "button-active": a[i + 1], "on-accent": a[4] || "FFFFFF" };
   }
-  function apply(target) {
+  function apply(target, acc) {
     mode = target;
-    const keys = Object.keys(palette(target));
-    for (const k of new Set([...keys, "on-accent"])) {
-      const v = target !== base && palette(target)[k];
-      if (v) {
-        root.style.setProperty("--spice-" + k, "#" + v.toLowerCase());
-        root.style.setProperty("--spice-rgb-" + k, [0, 2, 4].map((n) => parseInt(v.slice(n, n + 2), 16)).join(","));
+    accent = acc;
+    const own = target === base && acc === baseAccent;
+    const p = palette(target, acc);
+    for (const k of Object.keys(p)) {
+      if (!own) {
+        root.style.setProperty("--spice-" + k, "#" + p[k].toLowerCase());
+        root.style.setProperty("--spice-rgb-" + k, [0, 2, 4].map((n) => parseInt(p[k].slice(n, n + 2), 16)).join(","));
       } else {
         root.style.removeProperty("--spice-" + k);
         root.style.removeProperty("--spice-rgb-" + k);
       }
     }
     try {
-      if (target === base) localStorage.removeItem(KEY);
-      else localStorage.setItem(KEY, JSON.stringify({ sig, mode: target }));
+      if (own) localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, JSON.stringify({ sig, mode: target, accent: acc }));
     } catch (e) { /* storage blocked: the switch still works for this session */ }
   }
 
   function init() {
     // Back to the scheme's own colours first: the Marketplace swaps schemes live, without a reload
-    for (const k of [...Object.keys(DARK), "button", "button-active", "on-accent"]) {
+    for (const k of Object.keys(palette("Dark", "Red"))) {
       root.style.removeProperty("--spice-" + k);
       root.style.removeProperty("--spice-rgb-" + k);
     }
     const main = read("main"), button = read("button");
     if (!main || !button) return setTimeout(init, 300);
     base = main === "000000" ? "Dark" : main === "FFFFFF" ? "Light" : null;
-    accent = Object.keys(ACCENTS).find((n) => ACCENTS[n][base === "Dark" ? 0 : 2] === button);
-    // A custom colour scheme is left alone: there is no twin to switch to
-    if (!accent) base = null;
+    baseAccent = Object.keys(ACCENTS).find((n) => ACCENTS[n][base === "Dark" ? 0 : 2] === button);
+    // A custom colour scheme is left alone: there is no twin and no accent to switch to
+    if (!baseAccent) base = null;
     if (base) {
       sig = main + button;
       mode = base;
+      accent = baseAccent;
       try {
         const saved = JSON.parse(localStorage.getItem(KEY) || "null");
-        // A choice made on another scheme (changed in the Marketplace or with spicetify config) is dropped
-        if (saved && saved.sig === sig && (saved.mode === "Dark" || saved.mode === "Light")) apply(saved.mode);
-        else if (saved) localStorage.removeItem(KEY);
+        // A choice made on another scheme (changed in the Marketplace or with spicetify config) is dropped.
+        // Choices saved before the accent switch existed have no accent: they keep the scheme's.
+        if (saved && saved.sig === sig && (saved.mode === "Dark" || saved.mode === "Light")) {
+          apply(saved.mode, ACCENTS[saved.accent] ? saved.accent : baseAccent);
+        } else if (saved) localStorage.removeItem(KEY);
       } catch (e) { /* ignore */ }
     }
-    placeButton();
+    closePicker();
+    placeButtons();
   }
   new MutationObserver((mutations) => {
     if (mutations.some((m) => [...m.addedNodes].some((n) => n.matches?.("style.marketplaceScheme")))) init();
   }).observe(document.body, { childList: true });
 
-  // The button goes in the back / forward capsule, found by its place in the top bar: Spicetify.Topbar.Button
-  // looks for class names that the macOS build doesn't have, so its buttons never show up there.
-  const CAPSULE = "#global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container)";
-  let switcher, tip;
-  function placeButton() {
-    if (!base) return switcher?.remove();
-    const capsule = document.querySelector(CAPSULE);
-    const arrow = capsule?.querySelector(":scope > button");
-    if (!arrow) return;
-    if (!switcher) {
-      switcher = document.createElement("button");
-      switcher.id = "am-scheme-switch";
-      switcher.onclick = () => { apply(mode === "Dark" ? "Light" : "Dark"); placeButton(); };
-      tip = window.Spicetify?.Tippy?.(switcher, { content: "", ...Spicetify.TippyProps });
-    }
-    const label = mode === "Dark" ? "Switch to Light" : "Switch to Dark";
-    switcher.className = arrow.className;
-    switcher.setAttribute("aria-label", label);
-    if (tip) tip.setContent(label); else switcher.title = label;
-    // Same icon wrapper as the arrows, so it gets their size and spacing
-    switcher.innerHTML = `<span aria-hidden="true" class="${arrow.firstElementChild?.className || ""}">${mode === "Dark" ? SUN : MOON}</span>`;
-    if (switcher.parentElement !== capsule) capsule.append(switcher);
+  // The buttons go in the top bar's two capsules, found by their place: Spicetify.Topbar.Button looks for class
+  // names that the macOS build doesn't have, so its buttons never show up there. The sun closes the
+  // back / forward capsule on the left; the accent dot leads the bell / friends capsule on the right.
+  const LEFT = "#global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container)";
+  const RIGHT = "#global-nav-bar > div:last-of-type > div:first-child > div:first-child";
+  let switcher, switchTip, dot, dotTip;
+  function makeButton(id, onclick) {
+    const b = document.createElement("button");
+    b.id = id;
+    b.onclick = onclick;
+    return [b, window.Spicetify?.Tippy?.(b, { content: "", ...Spicetify.TippyProps })];
   }
-  // Spotify can rebuild the top bar (window resize, some pages): put the button back when it goes
+  function dress(b, tip, like, label, icon) {
+    b.className = like.className;
+    b.setAttribute("aria-label", label);
+    if (tip) tip.setContent(label); else b.title = label;
+    // Same icon wrapper as the button it sits next to, so it gets its size and spacing
+    const wrap = like.firstElementChild?.tagName === "SPAN" ? like.firstElementChild.className : "";
+    b.innerHTML = wrap ? `<span aria-hidden="true" class="${wrap}">${icon}</span>` : icon;
+  }
+  function placeButtons() {
+    if (!base) {
+      switcher?.remove();
+      dot?.remove();
+      return;
+    }
+    const left = document.querySelector(LEFT);
+    const arrow = left?.querySelector(":scope > button");
+    if (arrow) {
+      if (!switcher) [switcher, switchTip] = makeButton("am-scheme-switch", () => { apply(mode === "Dark" ? "Light" : "Dark", accent); placeButtons(); });
+      dress(switcher, switchTip, arrow, mode === "Dark" ? "Switch to Light" : "Switch to Dark", mode === "Dark" ? SUN : MOON);
+      if (switcher.parentElement !== left) left.append(switcher);
+    }
+    const right = document.querySelector(RIGHT);
+    const bell = right?.querySelector(":scope > button:not(#am-accent-switch)");
+    if (bell) {
+      if (!dot) [dot, dotTip] = makeButton("am-accent-switch", (e) => { e.stopPropagation(); picker ? closePicker() : openPicker(); });
+      dress(dot, dotTip, bell, "Accent colour", DOT);
+      dot.setAttribute("aria-haspopup", "true");
+      dot.setAttribute("aria-expanded", picker ? "true" : "false");
+      if (dot.parentElement !== right || right.firstElementChild !== dot) right.prepend(dot);
+    }
+  }
+
+  // The accent picker: a glass pill of six drops under the dot
+  let picker, tips = [];
+  function openPicker() {
+    closePicker();
+    dotTip?.hide?.();
+    picker = document.createElement("div");
+    picker.id = "am-accent-picker";
+    picker.setAttribute("role", "radiogroup");
+    picker.setAttribute("aria-label", "Accent colour");
+    for (const name of Object.keys(ACCENTS)) {
+      const b = document.createElement("button");
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", String(name === accent));
+      b.setAttribute("aria-label", name);
+      // Names show under the pill on hover only: focus moves with the arrow keys and would leave one stuck open
+      const tip = window.Spicetify?.Tippy?.(b, { content: name, ...Spicetify.TippyProps, placement: "bottom", trigger: "mouseenter" });
+      if (tip) tips.push(tip); else b.title = name;
+      b.style.setProperty("--am-swatch", "#" + ACCENTS[name][mode === "Dark" ? 0 : 2]);
+      b.onclick = (e) => {
+        e.stopPropagation();
+        apply(mode, name);
+        closePicker();
+        placeButtons();
+        // Back to the dot for keyboard users only (a click from the keyboard has no detail): after a mouse
+        // pick, focus on the dot would leave its tooltip showing
+        if (e.detail === 0) dot?.focus();
+      };
+      picker.append(b);
+    }
+    document.body.append(picker);
+    const r = dot.getBoundingClientRect();
+    const w = picker.offsetWidth;
+    picker.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + "px";
+    picker.style.top = r.bottom + 10 + "px";
+    dot.setAttribute("aria-expanded", "true");
+    (picker.querySelector('[aria-checked="true"]') || picker.firstElementChild).focus();
+  }
+  function closePicker() {
+    if (!picker) return;
+    for (const t of tips) t.destroy?.();
+    tips = [];
+    picker.remove();
+    picker = null;
+    dot?.setAttribute("aria-expanded", "false");
+  }
+  document.addEventListener("pointerdown", (e) => { if (picker && !picker.contains(e.target) && !dot?.contains(e.target)) closePicker(); }, true);
+  document.addEventListener("keydown", (e) => {
+    if (!picker) return;
+    if (e.key === "Escape") { closePicker(); dot?.focus(); return; }
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      const items = [...picker.children], i = items.indexOf(document.activeElement);
+      items[(i + (e.key === "ArrowRight" ? 1 : items.length - 1)) % items.length].focus();
+      e.preventDefault();
+    }
+  }, true);
+  addEventListener("resize", closePicker);
+  addEventListener("blur", closePicker);
+
+  // Spotify can rebuild the top bar (window resize, some pages): put the buttons back when they go
   let placing = false;
   new MutationObserver(() => {
-    if (base && !switcher?.isConnected && !placing) {
+    if (base && (!switcher?.isConnected || !dot?.isConnected) && !placing) {
       placing = true;
-      setTimeout(() => { placing = false; placeButton(); }, 50);
+      setTimeout(() => { placing = false; placeButtons(); }, 50);
     }
   }).observe(document.body, { childList: true, subtree: true });
   init();
