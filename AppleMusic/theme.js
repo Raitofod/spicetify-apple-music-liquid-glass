@@ -18,6 +18,7 @@
   function queueViews() {
     if (!viewsQueued) viewsQueued = setTimeout(() => { viewsQueued = 0; setCover(); flagViews();
       document.querySelectorAll(".main-topBar-background").forEach(syncTopBar);
+      document.querySelectorAll(SCROLLERS).forEach(alignEnd);
     }, 200);
   }
   new MutationObserver(() => {
@@ -69,6 +70,70 @@
     }));
   }
 
+  // The library, the page and the right panel all end the same distance above the player capsule. Each page ends
+  // with its own padding (16px on a section, 40px on a shelf, card padding), so a fixed spacer left a different
+  // gap on each: the spacer after the content (--am-tail, see user.css) is sized from where the last visible
+  // text or image actually ends. Only measured near the end, where virtualised lists have their last rows.
+  // Both ends are read from the page itself, never from the scroll offset, so a scroll in flight can't skew it.
+  const GAP = 24;
+  const SCROLLERS = ".main-view-container__scroll-node > [data-overlayscrollbars-viewport], "
+    + "#Desktop_LeftSidebar_Id [data-overlayscrollbars-viewport], #Desktop_PanelContainer_Id [data-overlayscrollbars-viewport]";
+  function alignEnd(scroller, retry) {
+    if (scroller.clientHeight < 200
+      || scroller.scrollTop + scroller.clientHeight < scroller.scrollHeight - scroller.clientHeight) return;
+    // The box whose ::after is the spacer (user.css): the page's <main>, or the lyrics column on the Lyrics page
+    let box = scroller.firstElementChild;
+    if (box?.classList.contains("main-view-container__scroll-node-child")) {
+      box = box.lastElementChild;
+      if (document.documentElement.classList.contains("am-lyrics")) box = box?.lastElementChild?.children[1] || box;
+    }
+    // The spacer starts where the box's last child ends, margin included
+    const last = box?.lastElementChild;
+    if (!last) return;
+    const contentEnd = last.getBoundingClientRect().bottom + (parseFloat(getComputedStyle(last).marginBottom) || 0);
+    const view = scroller.getBoundingClientRect();
+    let end = 0, faded = false;
+    const walk = document.createTreeWalker(box, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, { acceptNode(n) {
+      if (n.nodeType === 3) return n.textContent.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      const r = n.getBoundingClientRect();
+      // No box of its own (display: contents): its children still count
+      if (!r.width && !r.height) return NodeFilter.FILTER_SKIP;
+      return r.bottom < contentEnd - 400 && n.scrollHeight <= n.clientHeight + 1
+        ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+    } });
+    for (let n = walk.nextNode(); n; n = walk.nextNode()) {
+      const el = n.nodeType === 3 ? n.parentElement : n;
+      if (n.nodeType === 1 && !/^(IMG|svg|VIDEO)$/.test(n.tagName)) continue;
+      let bottom = 0;
+      if (n.nodeType === 3) { const range = document.createRange(); range.selectNodeContents(n); bottom = range.getBoundingClientRect().bottom; }
+      else if (n.getBoundingClientRect().height > 4) bottom = n.getBoundingClientRect().bottom;
+      if (bottom <= end) continue;
+      // Hover-only controls (a card's play button) sit at opacity 0 and are not content. A row still fading in
+      // is skipped too, so look again once it has settled
+      if (el.checkVisibility?.({ visibilityProperty: true, opacityProperty: true }) === false) { faded = true; continue; }
+      end = bottom;
+    }
+    if (faded && !retry) setTimeout(() => alignEnd(scroller, true), 500);
+    // Nothing near the end (a virtualised list not scrolled far enough yet): keep the current spacer
+    // ...or measures that disagree (a page caught mid-render): keep the current spacer
+    if (!end || Math.abs(contentEnd - end) > 300) return;
+    const capsule = document.querySelector('[data-testid="now-playing-bar"] > div:not(.encore-bright-accent-set)');
+    const covered = capsule ? Math.max(0, view.bottom - capsule.getBoundingClientRect().top) : 0;
+    // The library's column also puts its flex gap and bottom padding after the spacer. A box its content
+    // overflows (the page, the right panel) adds neither: only its children reach the scroll end.
+    const style = getComputedStyle(box);
+    const after = box.scrollHeight > box.clientHeight + 1 ? 0 : (parseFloat(style.paddingBottom) || 0)
+      + (/flex|grid/.test(style.display) ? parseFloat(style.rowGap) || 0 : 0);
+    const height = Math.round(Math.min(300, Math.max(0, GAP + covered - (contentEnd - end) - after))) + "px";
+    if (scroller.style.getPropertyValue("--am-tail") !== height) scroller.style.setProperty("--am-tail", height);
+  }
+  let alignQueued = new Set();
+  document.addEventListener("scroll", (event) => {
+    if (!event.target.matches?.(SCROLLERS)) return;
+    if (!alignQueued.size) requestAnimationFrame(() => { alignQueued.forEach(alignEnd); alignQueued = new Set(); });
+    alignQueued.add(event.target);
+  }, { capture: true, passive: true });
+
   // .am-panel-scrolled: the Now Playing panel has scrolled, so its title no longer sits on the hero.
   document.addEventListener("scroll", (event) => {
     // Only the panel's own scroller: carousels and Spicy Lyrics' lyrics scroll inside it too
@@ -91,6 +156,11 @@
     };
     history.listen(flag);
     flag(history.location);
+    // The page scroller is shared by every page: a new page starts from the default spacer, not the last one's
+    history.listen(() => {
+      document.querySelector(".main-view-container__scroll-node > [data-overlayscrollbars-viewport]")?.style.removeProperty("--am-tail");
+      queueViews();
+    });
   })();
 })();
 

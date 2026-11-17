@@ -1,5 +1,14 @@
 # Changelog
 
+## v1.4.2
+### Fixed
+- The right panel had rounded corners against the window edge (added by Spicy Lyrics), which showed white notches in the Light scheme. It is square again.
+- Search suggestions use the same sharp glass as the rest of the theme (4px blur instead of 14px), like the search field above them.
+- The last rows of a page, the library and the right panel were hidden under the player and could not be clicked. Every page now scrolls far enough to clear it, and the three columns stop at the same height above the player.
+- The library and the right panel could not be resized: with no gap between panels, their grips were 0px wide. They are grabbable again.
+- Home's large video cards ("Made for you", playlist promos) had dark titles over their dark video in the Light scheme. They are light again.
+- With Spicy Lyrics, the right panel's secondary text (credits, tour dates, "Show all") was dark on its dark background in the Light scheme. It is light again.
+
 ## v1.4.1
 ### Fixed
 - macOS: the Light/Dark button did not show up. Spicetify's top bar API looks for class names the macOS build doesn't have, so the theme now places the button itself, next to the back and forward arrows (#3).
