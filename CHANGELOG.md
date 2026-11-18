@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.5
+### Fixed
+- While search suggestions were loading, their panel was an opaque grey box: Spotify shows the loading state in a different container. It now wears the same glass as the loaded suggestions.
+- The "Add to playlist" sheet (the + next to the playing title) was a glass list inside an opaque frame. The whole sheet is one glass pane now, and its search field is a pill like the one in the top bar.
+- Checked on Spotify 1.3.10 (Windows and macOS).
+
 ## v1.4.4
 ### New
 - Accent switch: a coloured dot sits first in the bell / friends capsule, the mirror of the Light/Dark button. Clicking it opens a glass pill with the six accents (Red, Pink, Orange, Blue, Purple, Green); the whole app follows, in Dark and in Light, and the choice is remembered. Works with the mouse and the keyboard (arrows, Escape).

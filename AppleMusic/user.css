@@ -643,6 +643,38 @@ button[aria-checked="true"] svg,
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
 }
+/* "Add to playlist" sheet (the + next to the playing title): Spotify sets an opaque form around a menu
+   list, so only the list was glass, a box inside a box. The whole sheet is one glass pane now. */
+#context-menu > form {
+  position: relative;
+  isolation: isolate;
+  background: var(--am-glass-ctl) !important;
+  background-image: var(--am-sheen) !important;
+  border: 1px solid var(--am-glass-edge);
+  border-radius: var(--am-radius-l) !important;
+  box-shadow: var(--am-rim), 0 12px 32px rgba(0, 0, 0, 0.28) !important;
+}
+#context-menu > form::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+}
+#context-menu > form > div:last-child,
+#context-menu > form #curation-sheet-list {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+#context-menu > form #curation-sheet-list::before { content: none; }
+#context-menu > form input[role="searchbox"] {
+  background-color: rgba(var(--spice-rgb-text), 0.08) !important;
+  border-radius: 999px !important;
+}
 [role="menuitem"], .main-contextMenu-menuItemButton {
   border-radius: var(--am-radius-s);
 }
@@ -762,7 +794,8 @@ main [style*="--background-color"] {
   box-shadow: inset 0 1px 0 rgba(var(--spice-rgb-text), 0.1);
 }
 /* The suggestions panel under the search field: the same sharp glass as the search field it hangs from */
-#search-dropdown > div {
+#search-dropdown > div,
+#search-suggestions-loading-dropdown > div {
   background: var(--am-glass-ctl) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);
