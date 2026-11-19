@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.6
+### New
+- Each scheme remembers its own accent: pick Green in Dark and Blue in Light, and the sun / moon button brings back the right one every time, after a restart too. A scheme you never picked an accent for follows the current one, as before. Choices saved by earlier versions load as they were.
+
 ## v1.4.5
 ### Fixed
 - While search suggestions were loading, their panel was an opaque grey box: Spotify shows the loading state in a different container. It now wears the same glass as the loaded suggestions.

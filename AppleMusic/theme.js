@@ -181,6 +181,9 @@
   const root = document.documentElement;
   const read = (k) => getComputedStyle(root).getPropertyValue("--spice-" + k).trim().replace("#", "").toUpperCase();
   let base, baseAccent, accent, mode, sig;
+  // Each scheme remembers its own accent (Green in Dark, Blue in Light...). A scheme never picked yet
+  // takes the current accent when switched to.
+  let accents = {};
 
   function palette(target, acc) {
     const a = ACCENTS[acc], i = target === "Dark" ? 0 : 2;
@@ -189,7 +192,11 @@
   function apply(target, acc) {
     mode = target;
     accent = acc;
+    accents[target] = acc;
     const own = target === base && acc === baseAccent;
+    const other = target === "Dark" ? "Light" : "Dark";
+    // Nothing to keep when this is the scheme's own look and the other scheme would follow it anyway
+    const plain = own && (!accents[other] || accents[other] === baseAccent);
     const p = palette(target, acc);
     for (const k of Object.keys(p)) {
       if (!own) {
@@ -201,8 +208,8 @@
       }
     }
     try {
-      if (own) localStorage.removeItem(KEY);
-      else localStorage.setItem(KEY, JSON.stringify({ sig, mode: target, accent: acc }));
+      if (plain) localStorage.removeItem(KEY);
+      else localStorage.setItem(KEY, JSON.stringify({ sig, mode: target, accent: acc, accents }));
     } catch (e) { /* storage blocked: the switch still works for this session */ }
   }
 
@@ -222,11 +229,16 @@
       sig = main + button;
       mode = base;
       accent = baseAccent;
+      // With nothing saved, the scheme's own accent is the starting scheme's memory
+      accents = { [base]: baseAccent };
       try {
         const saved = JSON.parse(localStorage.getItem(KEY) || "null");
         // A choice made on another scheme (changed in the Marketplace or with spicetify config) is dropped.
         // Choices saved before the accent switch existed have no accent: they keep the scheme's.
+        // Choices saved before per-scheme accents existed only know the accent of their scheme.
         if (saved && saved.sig === sig && (saved.mode === "Dark" || saved.mode === "Light")) {
+          accents = {};
+          for (const m of ["Dark", "Light"]) if (ACCENTS[saved.accents?.[m]]) accents[m] = saved.accents[m];
           apply(saved.mode, ACCENTS[saved.accent] ? saved.accent : baseAccent);
         } else if (saved) localStorage.removeItem(KEY);
       } catch (e) { /* ignore */ }
@@ -267,7 +279,7 @@
     const left = document.querySelector(LEFT);
     const arrow = left?.querySelector(":scope > button");
     if (arrow) {
-      if (!switcher) [switcher, switchTip] = makeButton("am-scheme-switch", () => { apply(mode === "Dark" ? "Light" : "Dark", accent); placeButtons(); });
+      if (!switcher) [switcher, switchTip] = makeButton("am-scheme-switch", () => { const to = mode === "Dark" ? "Light" : "Dark"; apply(to, accents[to] || accent); placeButtons(); });
       dress(switcher, switchTip, arrow, mode === "Dark" ? "Switch to Light" : "Switch to Dark", mode === "Dark" ? SUN : MOON);
       if (switcher.parentElement !== left) left.append(switcher);
     }
