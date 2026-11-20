@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.4.7
+### Fixed
+- Hovering the Marketplace icon in the top bar cut its round button into a square: Spicetify keeps custom links in a scroller exactly as big as the button, which clipped it when it grew. The button now has room around it, keeps its full circle on hover and gets back the soft shadow of the other controls. Nothing moves, and the page under the bar still takes its clicks.
+
 ## v1.4.6
 ### New
 - Each scheme remembers its own accent: pick Green in Dark and Blue in Light, and the sun / moon button brings back the right one every time, after a restart too. A scheme you never picked an accent for follows the current one, as before. Choices saved by earlier versions load as they were.

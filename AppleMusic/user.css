@@ -194,10 +194,24 @@ html, body, .encore-dark-theme, .encore-light-theme, .encore-base-set,
   box-shadow: var(--am-rim), 0 4px 14px rgba(0, 0, 0, 0.18);
   border: 1px solid var(--am-glass-edge) !important;
 }
-/* Spicetify's custom links (Marketplace) sit in a scroller exactly as big as the button: it would clip the
-   outer shadow into a grey square behind the round button. Only the lit rim stays there. */
+/* Spicetify's custom links (Marketplace) sit in a scroller exactly as big as the button, which clipped the
+   round button into a square when it grew on hover, and cut its shadow. The scroller and its frame get
+   room around the button (padding, cancelled by a negative margin, so nothing moves and nothing scrolls). */
+#global-nav-bar .custom-navlinks-scrollable_container .spicetify-sc-contentArea,
+#global-nav-bar .custom-navlinks-scrollable_container .spicetify-sc-scroller {
+  padding: 20px !important;
+  margin: -20px !important;
+}
+#global-nav-bar .custom-navlinks-scrollable_container .spicetify-sc-scroller {
+  width: calc(100% + 40px) !important;
+}
+/* That room is see-through for the mouse: only the buttons take clicks, not the page under the bar */
+#global-nav-bar .custom-navlinks-scrollable_container .spicetify-sc-contentArea,
+#global-nav-bar .custom-navlinks-scrollable_container .spicetify-sc-scroller {
+  pointer-events: none;
+}
 #global-nav-bar .custom-navlinks-scrollable_container button {
-  box-shadow: var(--am-rim);
+  pointer-events: auto;
 }
 /* Back / forward / theme buttons and the bell / friends buttons share a capsule each */
 #global-nav-bar .main-globalNav-historyButtons,
