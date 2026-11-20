@@ -4,6 +4,14 @@
 ### New
 - Each scheme remembers its own accent: pick Green in Dark and Blue in Light, and the sun / moon button brings back the right one every time, after a restart too. A scheme you never picked an accent for follows the current one, as before. Choices saved by earlier versions load as they were.
 
+### Fixed
+- Every floating container was reviewed, in Dark and Light, for glass that was only half there:
+  - Dialogs (Marketplace settings, extensions' pop-ups): once the Marketplace had been opened, its stylesheet put an opaque frame around the glass sheet. The frame is clear now.
+  - "Sort by / View as" menus (library, playlists): two separate glass boxes and an opaque grey view switch. One pane now, with a hairline between its two sections.
+  - Tooltips and toasts were opaque. They wear the glass now, on Windows and macOS.
+  - The Marketplace's sort box was an opaque field over an opaque list. Both are glass now, like every other menu.
+  - The search field of the "Add to playlist" sub-menu is a pill, like the one in the sheet.
+
 ## v1.4.5
 ### Fixed
 - While search suggestions were loading, their panel was an opaque grey box: Spotify shows the loading state in a different container. It now wears the same glass as the loaded suggestions.
