@@ -1082,6 +1082,19 @@ section[data-testid$="-page"] > div[style*="--background-base"] {
   fill: var(--am-accent) !important;
 }
 
+/* "Now playing" equaliser next to the playing track (lists, Home shortcuts): Spotify draws it as a green image,
+   a GIF when animated and an SVG when still. The image is pushed out of its box and its shape, used as a mask,
+   is painted in the accent colour. The white variant over cover art stays white. */
+img[src*="equaliser-animated-green"],
+img[src*="equaliser-green"] {
+  object-position: -9999px 0;
+  background-color: var(--am-accent) !important;
+  -webkit-mask: url("images/equaliser-animated-green.gif") center / 100% 100% no-repeat;
+}
+img[src*="equaliser-green"] {
+  -webkit-mask-image: url("images/equaliser-green.svg");
+}
+
 /* Listening activity: Spotify's native "active friend" dot on the avatar uses the accent colour too */
 #Desktop_PanelContainer_Id figure::after {
   background: var(--am-accent);
