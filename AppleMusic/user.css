@@ -1075,11 +1075,17 @@ section[data-testid$="-page"] > div[style*="--background-base"] {
   border-radius: 0 !important;
 }
 
-/* Listening activity: the live "equalizer" icon (shown instead of a timestamp) takes the accent colour,
-   so the friend who is playing something right now stands out from the others */
+/* Listening activity: the live "equalizer" icon (shown instead of a timestamp) is a still SVG. Its drawing is
+   hidden and the animated "now playing" bars are painted in its place, in the accent colour, so the friend who
+   is playing something right now stands out from the others */
 #Desktop_PanelContainer_Id p[data-encore-id="text"] > svg[role="img"] {
-  color: var(--am-accent) !important;
-  fill: var(--am-accent) !important;
+  color: transparent !important;
+  fill: transparent !important;
+  background-color: var(--am-accent);
+  -webkit-mask: url("images/equaliser-animated-green.gif") center / contain no-repeat;
+}
+#Desktop_PanelContainer_Id p[data-encore-id="text"] > svg[role="img"] > * {
+  visibility: hidden;
 }
 
 /* "Now playing" equaliser next to the playing track (lists, Home shortcuts): Spotify draws it as a green image,
