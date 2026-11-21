@@ -441,9 +441,22 @@ button[aria-label="Play"][class*="Button"],
 }
 /* Spotify 1.3.9 wraps the button in this div and hides only the inner button until hover: the wrapper
    must stay unpainted, or the accent shows as a permanent square */
-div.main-playButton-PlayButton {
+div.main-playButton-PlayButton,
+div[data-testid="play-button"],
+div[data-testid="play-button"]:hover {
   background: none !important;
   box-shadow: none !important;
+}
+/* 1.3.10 also moved data-testid="play-button" to a square grid cell around the round button (search's top
+   result): it must not grow on hover either, only the button inside does */
+div[data-testid="play-button"]:hover {
+  transform: none;
+}
+/* Play glyphs over a darkened image (a library cover, a friend's photo in Listening activity): Spotify draws them
+   in the text colour, black in the Light scheme over a black veil. White in both schemes, like Apple Music. */
+#Desktop_LeftSidebar_Id div[role="div"] > button[data-encore-id="buttonTertiary"],
+#Desktop_PanelContainer_Id figure + button {
+  color: #fff !important;
 }
 [data-testid="play-button"]:hover,
 .main-card-PlayButtonContainer button:hover {

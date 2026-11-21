@@ -4,6 +4,10 @@
 ### Changed
 - Listening activity: the icon next to a friend who is playing something right now is animated, like the "now playing" bars next to your own track, in the accent colour.
 
+### Fixed
+- Light scheme: hovering a cover in the library, or a friend's photo in Listening activity, showed a black play glyph on the dark veil, nearly invisible. It is white now, in both schemes.
+- The play button of search's top result sat in an accent square: Spotify 1.3.10 moved the play button's marker to a square cell around it. Only the round button is painted now.
+
 ## v1.4.7
 ### Fixed
 - Hovering the Marketplace icon in the top bar cut its round button into a square: Spicetify keeps custom links in a scroller exactly as big as the button, which clipped it when it grew. The button now has room around it, keeps its full circle on hover and gets back the soft shadow of the other controls. Nothing moves, and the page under the bar still takes its clicks.
