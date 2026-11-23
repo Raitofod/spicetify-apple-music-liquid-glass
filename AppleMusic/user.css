@@ -556,12 +556,31 @@ button[aria-checked="true"] svg,
 [data-testid="now-playing-bar"] > div {
   pointer-events: auto;
 }
-/* "Playing on <device>" strip: a small pill under the capsule instead of a full-width band */
-[data-testid="now-playing-bar"] > .encore-bright-accent-set {
-  margin-top: 6px;
-  border-radius: var(--am-radius-m);
+/* "Playing on <device>" strip (the block after the capsule, connected or connecting): Spotify draws a full-width
+   band in its own green under the player. It becomes a small glass pill centred above the capsule, over the
+   playback controls, its icon and text in the accent colour */
+[data-testid="now-playing-bar"] > div + div {
+  --essential-base: var(--am-accent);
+  order: -1;
+  align-self: center;
+  width: fit-content;
+  height: 26px;
+  margin: 0 auto 6px;
+  padding: 0 12px 0 10px;
+  background: var(--am-glass-ctl) !important;
+  -webkit-backdrop-filter: var(--am-blur);
+  backdrop-filter: var(--am-blur);
+  background-image: var(--am-sheen) !important;
+  border: 1px solid var(--am-glass-edge);
+  border-radius: 999px;
+  box-shadow: var(--am-rim), 0 6px 20px rgba(0, 0, 0, 0.30);
 }
-[data-testid="now-playing-bar"] > div:not(.encore-bright-accent-set) {
+[data-testid="now-playing-bar"] > div + div,
+[data-testid="now-playing-bar"] > div + div button,
+[data-testid="now-playing-bar"] > div + div span {
+  color: var(--am-accent) !important;
+}
+[data-testid="now-playing-bar"] > div:not(.encore-bright-accent-set):not(div + div) {
   background: var(--am-glass) !important;
   -webkit-backdrop-filter: var(--am-blur);
   backdrop-filter: var(--am-blur);

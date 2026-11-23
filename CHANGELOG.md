@@ -6,6 +6,7 @@
 
 ### Fixed
 - Light scheme: hovering a cover in the library, or a friend's photo in Listening activity, showed a black play glyph on the dark veil, nearly invisible. It is white now, in both schemes.
+- "Playing on <device>" was a full-width band in Spotify green under the player. It is a small glass pill centred above the player now, its icon and text in the accent colour.
 - The play button of search's top result sat in an accent square: Spotify 1.3.10 moved the play button's marker to a square cell around it. Only the round button is painted now.
 
 ## v1.4.7
