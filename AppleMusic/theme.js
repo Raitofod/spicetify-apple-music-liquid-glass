@@ -255,6 +255,26 @@
   // back / forward capsule on the left; the accent dot leads the bell / friends capsule on the right.
   const LEFT = "#global-nav-bar > div:first-of-type > div > div:not(:empty):not(.custom-navlinks-scrollable_container)";
   const RIGHT = "#global-nav-bar > div:last-of-type > div:first-child > div:first-child";
+  // The bell / friends capsule is found from the profile button, which has a test id everywhere: the nearest
+  // box of buttons before it. Its depth in the bar differs on some macOS builds, where the place alone landed
+  // on the box holding the profile photo too, and the photo broke out of the capsule (#7).
+  function findActions() {
+    const avatar = document.querySelector('#global-nav-bar [data-testid="user-widget-link"]');
+    for (let el = avatar; el && el.id !== "global-nav-bar"; el = el.parentElement) {
+      for (let s = el.previousElementSibling; s; s = s.previousElementSibling) {
+        if (s.tagName === "DIV" && s.querySelector(":scope > button")) return s;
+      }
+    }
+    return avatar ? null : document.querySelector(RIGHT);
+  }
+  function tagActions() {
+    const box = findActions();
+    if (box && !box.classList.contains("am-actions")) {
+      document.querySelectorAll("#global-nav-bar .am-actions").forEach((b) => b.classList.remove("am-actions"));
+      box.classList.add("am-actions");
+    }
+    return box;
+  }
   let switcher, switchTip, dot, dotTip;
   function makeButton(id, onclick) {
     const b = document.createElement("button");
@@ -271,6 +291,7 @@
     b.innerHTML = wrap ? `<span aria-hidden="true" class="${wrap}">${icon}</span>` : icon;
   }
   function placeButtons() {
+    const right = tagActions();
     if (!base) {
       switcher?.remove();
       dot?.remove();
@@ -283,8 +304,7 @@
       dress(switcher, switchTip, arrow, mode === "Dark" ? "Switch to Light" : "Switch to Dark", mode === "Dark" ? SUN : MOON);
       if (switcher.parentElement !== left) left.append(switcher);
     }
-    const right = document.querySelector(RIGHT);
-    const bell = right?.querySelector(":scope > button:not(#am-accent-switch)");
+    const bell =right?.querySelector(":scope > button:not(#am-accent-switch)");
     if (bell) {
       if (!dot) [dot, dotTip] = makeButton("am-accent-switch", (e) => { e.stopPropagation(); picker ? closePicker() : openPicker(); });
       dress(dot, dotTip, bell, "Accent colour", DOT);
@@ -355,7 +375,8 @@
   // Spotify can rebuild the top bar (window resize, some pages): put the buttons back when they go
   let placing = false;
   new MutationObserver(() => {
-    if (base && (!switcher?.isConnected || !dot?.isConnected) && !placing) {
+    const lost = base ? !switcher?.isConnected || !dot?.isConnected : false;
+    if ((lost || !document.querySelector("#global-nav-bar .am-actions")) && !placing) {
       placing = true;
       setTimeout(() => { placing = false; placeButtons(); }, 50);
     }

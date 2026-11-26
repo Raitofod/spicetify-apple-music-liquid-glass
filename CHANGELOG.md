@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.4.9
+### Fixed
+- Right-click and "..." menus had lost their blur since Spotify 1.3.10: the page showed through them sharp and hard to read (#5). Spotify now puts a scroll shadow and a drop-shadow filter on its menus, which hid the theme's blur. The menus are frosted glass again, with the same transparency as before.
+- The "Add to playlist" sub-menu of the right-click menu was a glass list inside an opaque frame (#5). The whole sub-menu is one glass pane now.
+- Confirm dialogs ("Already added", and the others like it) had black text on the dark glass (#6): Spotify draws them for a white card. They take the scheme's colours now.
+- macOS: the profile photo broke out of the bell / friends capsule (#7). The capsule is now found from the profile button, whatever the depth of the top bar.
+
 ## v1.4.8
 ### Changed
 - Listening activity: the icon next to a friend who is playing something right now is animated, like the "now playing" bars next to your own track, in the accent colour.
